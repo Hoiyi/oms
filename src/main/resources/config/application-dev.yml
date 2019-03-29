@@ -9,8 +9,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://118.31.12.178:3306/goldcardsvn?useUnicode=true&characterEncoding=utf8
-    #url: jdbc:mysql://10.20.11.23:3306/oms?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://127.0.1:3306/husvn?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: huyw
     password: 123456
     initialSize: 10
