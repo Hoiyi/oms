@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+
+<head th:include="sysManagement/system/user/include :: header"></head>
+<style>
+label.error{
+	float: left;
+}
+</style>
+<body >
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="ibox">
+                <div class="" style="padding-bottom: 0;">
+                    <div class="gg-nav">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#sys-setting" data-toggle="tab">系统</a></li>
+                            <li><a href="#email-setting" data-toggle="tab">邮件</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tab-content">
+                    <!--sys-->
+                    <div class="ibox-content tab-pane fade in active"  id="sys-setting">
+                        <form class="gg-form" role="form" id="sysSettingsForm">
+                          <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <em class="gg-star">*</em>
+                                    <span>集团名称:</span>
+                                </div>
+                                <div class="gg-formDetail ">
+                                    <input type="text" required maxlength="100" class="form-control "  id="companyName" th:value="${companyName}"  name="companyName" placeholder="请输入集团名称" />
+                                    
+                                </div>
+                            </div>
+                           
+                           <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <em class="gg-star">*</em>
+                                    <span>会话超时:</span>
+                                </div>
+                                <div class="gg-formDetail ">
+                                    <input type="text" required  maxlength="100" number="true"  class="form-control " id="sessionTimeout" th:value="${sessionTimeout}" name="sessionTimeout" placeholder="请输入超时时间" />
+                                </div>
+                            </div>
+                             <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <em class="gg-star">*</em>
+                                    <span>默认密码:</span>
+                                </div>
+                                <div class="gg-formDetail ">
+                                    <input type="text"  required  maxlength="100"  class="form-control " id="defaultPassword" th:value="${defaultPassword}" name="defaultPassword" placeholder="新建用户和重置时的默认密码" />
+                                    
+                                </div>
+                            </div>
+                            
+                          
+                            
+                        </form>
+                        <div class="gg-btnGroup">
+                            <button type="button" class="btn btn-sm btn-primary" id="sysSettings_save">保存</button>
+                        </div>
+                    </div>
+
+                    <!--email-->
+                    <div class="ibox-content tab-pane fade" id="email-setting">
+                        <form class="gg-form" role="form" id="emailSettingsForm">
+                         
+                        	 <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <em class="gg-star">*</em>
+                                    <span>邮箱域名:</span>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <input type="text" required  maxlength="100"  class="form-control" id="suffix" th:value="${suffix}" name="suffix" placeholder="请输入邮箱域名" />
+                                </div>
+                            </div>
+                        	 <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <em class="gg-star">*</em>
+                                    <span>邮箱生成策略:</span>
+                                </div>
+                                <div class="gg-formDetail">
+                                    <div class="radio i-checks">
+                                        <label class="radio-inline" th:each="model:${generateModeList}"> 
+                                        	<input th:checked="${generateMode} == ${model.value}" type="radio" name="generateMode" th:value="${model.value}" th:text="${model.name}"/>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                          <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <em class="gg-star">*</em>
+                                    <span>邮箱账户:</span>
+                                </div>
+                                <div class="gg-formDetail ">
+                                    <input type="text" required maxlength="100"  class="form-control " email="true" id="account" th:value="${account}" name="account" placeholder="请输入邮箱账户" />
+                                </div>
+                           </div>
+                         <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <em class="gg-star">*</em>
+                                    <span>邮箱密码:</span>
+                                </div>
+                                <div class="gg-formDetail ">
+                                    <input type="password"  required  maxlength="100" class="form-control " id="password" th:value="${password}" name="password" placeholder="请输入邮箱密码" />
+                                    
+                                </div>
+                            </div>
+                          <div class="gg-formGroup">
+                                <div class="gg-formTitle">
+                                    <em class="gg-star">*</em>
+                                    <span>服务器:</span>
+                                </div>
+                                <div class="gg-formDetail ">
+                                    <input type="text" required maxlength="100"   class="form-control " id="smtpServer" th:value="${smtpServer}" name="smtpServer" placeholder="请输入邮箱服务器" />
+                                </div>
+                           </div>
+                        </form>
+                        <div class="gg-btnGroup">
+                            <button type="button" class="btn btn-sm btn-primary" id="emailSettings_save">保存</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="sysManagement/system/user/include :: footer"></div>
+<script type="text/javascript" th:src="@{/js/appjs/sysManagement/sys/setting/settings.js}"></script>
+<script th:inline="javascript" type="text/javascript">
+		var settings = [[${settings}]];
+</script>
+</body>
+</html>

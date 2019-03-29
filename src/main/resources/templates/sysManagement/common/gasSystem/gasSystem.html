@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div id='panel-1' class="cpanel col-sm-7 ">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="ibox-title">
+								<div class="pull-left">
+									<h5>系统列表</h5>
+								</div>
+								<div  class="pull-right" >
+									<i id='resizeBtn-1' class="btn fa fa-expand" onclick="resize('panel-1','resizeBtn-1')"></i>
+								</div>
+					</div>
+					<div class="ibox-button">
+						<div class="columns pull-left">
+							<button shiro:hasPermission="common:gasSystem:add" type="button"
+								class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="common:gasSystem:edit" type="button"
+								class="btn  btn-primary" onclick="edit()">
+								<i class="fa fa-edit" aria-hidden="true"></i>编辑
+							</button>
+							<button shiro:hasPermission="common:gasSystem:remove"
+								type="button" class="btn  btn-danger" onclick="remove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+						</div>
+						<div class="columns pull-right">
+								<button class="btn btn-success" onclick="reLoad()">查询</button>
+						</div>
+
+						<div class="columns pull-right col-md-2 nopadding">
+								<input id="searchName" type="text" class="form-control  enterSearch" placeholder="系统描述">
+						</div>
+					</div>
+					<div class='list-content pre-scrollable'>
+						<table id="exampleTable"  data-mobile-responsive="true"> </table>
+					</div>
+				</div>
+			</div>
+		</div>
+	    <div id='panel-2' class="cpanel col-sm-5" >
+			<form class="form-horizontal" id="signupForm">
+					<div class="ibox ibox-body">
+						<div class="ibox-title ">
+								<div class="pull-left">
+									<h5>详细信息</h5>
+								</div>
+								<div  class="pull-right" >
+									<i id='resizeBtn-2' class="btn fa fa-expand" onclick="resize('panel-2','resizeBtn-2')"></i>
+								</div>
+						</div>
+						<div class="ibox-button">
+							<div class="pull-right">
+								 	<button id="cancelbtn" onclick="cancel()"  class="btn btn-danger hidden"  type="button"> 
+								 		<i class="fa fa fa-close" aria-hidden="true"></i> 放弃 
+								   </button> 
+								 	<button id="savebtn"  class="btn btn-primary hidden"  type="submit"> 
+								 		<i class="fa fa-check-square-o" aria-hidden="true"></i> 保存 
+								   </button> 
+								</div>
+						</div>
+						<div class="ibox-content pre-scrollable">
+						   <!-- <input id="platId" name="platId" type="hidden" >  -->
+							<input id="menuId" name="menuId" type="hidden" > 
+							<input id="sysId" name="sysId" type="hidden" > 
+							<input id="firstDeptId" name="firstDeptId" type="hidden" > 
+							<input id="secondDeptId" name="secondDeptId" type="hidden" > 
+							<input id="opt" name="opt" type="hidden" > 
+							<div class="form-group">
+								<label class="col-sm-4 control-label "><em class="gg-star">*</em>所属平台：</label>
+								<div class="col-sm-6">
+									<select id=platId name="platId" data-remark="selectpicker" class="selectpicker form-control" >
+									     <option value="">选择平台</option>                         
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label"><em class="gg-star">*</em>系统描述：</label>
+								<div class="col-sm-6">
+									<input id="sysName" name="sysName" placeholder="系统描述"  readonly="readonly" class="form-control" type="text">
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="col-sm-4 control-label"><em class="gg-star">*</em>一级维护部门：</label>
+								<div class="col-sm-6">
+									<input id="firstDept" name="firstDept" placeholder="点击选择" onclick="openDept('firstDeptId','firstDept')" readonly="readonly" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label"><em class="gg-star">*</em>二级维护部门：</label>
+								<div class="col-sm-6">
+									<input id="secondDept" name="secondDept" placeholder="点击选择"  onclick="openDept('secondDeptId','secondDept')" readonly="readonly" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label"><em class="gg-star">*</em>系统用途：</label>
+								<div class="col-sm-6">
+									<input id="gasSystemUse" name="gasSystemUse" class="hidden">
+									<select name="use-select"  class="ui-choose"  id="use-select">
+                                        <option th:each="gasSystemUse:${gasSystemUseList}" th:value="${gasSystemUse.value}" th:text="${gasSystemUse.name}"></option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					</form>
+			</div>
+		
+	</div>
+
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" th:src="@{/js/appjs/sysManagement/common/gasSystem/gasSystem.js}"></script>
+	<script type="text/javascript" th:src="@{/js/global.js}"></script>
+</body>
+</html>

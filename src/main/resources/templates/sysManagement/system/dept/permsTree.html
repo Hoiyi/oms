@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body>
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox-content">
+					<div id="permsTree"></div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-12 pull-right">
+						<button type="button" onclick="onSubmit()" class="btn btn-primary">确定</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			getTreeData()
+		});
+		function getTreeData() {
+			$.ajax({
+				type : "GET",
+				url : ctx + "sys/user/tree",
+				success : function(tree) {
+					loadTree(tree);
+				}
+			});
+		}
+		function loadTree(tree) {
+			$('#permsTree').jstree({
+				'core' : {
+					'data' : tree
+				},
+				"plugins" : [ "checkbox" ]
+			}).on("loaded.jstree", function (event, data) {
+				$('#permsTree').jstree().open_all();
+				//调用父窗口的方法
+				var dataPerms = parent.getPerms().split(",");
+				var ref = $('#permsTree').jstree(true); // 获得整个树
+				//将用户已分配到权限勾选
+				for(let index in dataPerms) {
+					if(typeof(ref.get_node(dataPerms[index]).state) != 'undefined'){
+						if(ref.get_node(dataPerms[index]).state.mType == 'user' ){
+							ref.select_node(ref.get_node(dataPerms[index]));
+						}
+					}
+				}; 
+			});
+		}
+		function onSubmit() {
+			var ref = $('#permsTree').jstree(true); // 获得整个树
+			menuIds = ref.get_selected(); // 获得所有选中节点的，返回值为数组
+			var ids = "";
+			var names = "";
+
+			for(let index in menuIds) {
+				var node = ref.get_node(menuIds[index]);
+				if(typeof(node.state) != 'undefined'){
+					if(node.state.mType == 'user'){//如果是最小节点,因为数据权限要精确到人
+						 names += node.text + ",";
+						 ids += menuIds[index] +","
+					}
+				}
+			}
+			//去掉最后一个','
+			names = names.substr(0, names.length - 1);
+			ids = ids.substr(0, ids.length - 1);
+
+			parent.loadPerms(ids,names);
+			var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+			parent.layer.close(index);
+		}
+	</script>
+</body>
+</html>

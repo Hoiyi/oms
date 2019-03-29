@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hu.sysManagement.system.dao.UserDao">
+
+	<select id="get"
+		resultType="com.hu.sysManagement.system.domain.User">
+		select
+		`user_id`,`username`,`name`,`password`,`dept_id`,`email`,`mobile`,`status`,`user_id_create`,`gmt_create`,`gmt_modified`,`sex`,`birth`,`pic_id`,`live_address`,`hobby`,`province`,`city`,`district`
+		,`homepage` from sys_user where user_id = #{value}
+	</select>
+
+	<select id="findByIds"
+		resultType="com.hu.sysManagement.system.domain.User">
+		select
+		`user_id`,`username`,`name`,`password`,`dept_id`,`email`,`mobile`,`status`,`user_id_create`,`gmt_create`,`gmt_modified`,`sex`,`birth`,`pic_id`,`live_address`,`hobby`,`province`,`city`,`district`
+		,`homepage` from sys_user where user_id in
+		<foreach item="userId" collection="array" open="("
+			separator="," close=")">
+			#{userId}
+		</foreach>
+	</select>
+
+	<select id="list" resultType="java.util.Map">
+		SELECT
+		u.user_id as userId,
+		u.username as username,
+		u.`name` as `name`,
+		u.`password` as `password`,
+		u.dept_id as deptId,
+		d.`name` as deptName,
+		u.email as email,
+		u.mobile as mobile,
+		u.`status` as `status`,
+		u.user_id_create as userIdCreate,
+		u.gmt_create as gmtCreate,
+		u.gmt_modified as gmtModified,
+		u.sex as sex,
+		u.birth as birth,
+		u.pic_id as picId,
+		u.live_address as liveaddress,
+		u.hobby as hobby,
+		u.province as province,
+		u.city as city,
+		u.district as district,
+		u.homepage as homepage
+		FROM
+		sys_user u left join sys_dept d on d.dept_id = u.dept_id
+		<where>
+			<if test="userId != null and userId != ''"> and u.user_id = #{userId} </if>
+			<if test="username != null and username != ''"> and u.username = #{username} </if>
+			<if test="name != null and name != ''"> and u.name like CONCAT('%',#{name},'%') </if>
+			<if test="password != null and password != ''"> and u.password = #{password} </if>
+			<if test="deptId != null and deptId != ''"> and u.dept_id = #{deptId} </if>
+			<if test="email != null and email != ''"> and u.email = #{email} </if>
+			<if test="mobile != null and mobile != ''"> and u.mobile = #{mobile} </if>
+			<if test="status != null and status != '' and status.length > 0">
+				and u.status in
+				<foreach collection="status" index="index" item="item"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="userIdCreate != null and userIdCreate != ''"> and u.user_id_create = #{userIdCreate} </if>
+			<if test="gmtCreate != null and gmtCreate != ''"> and u.gmt_create = #{gmtCreate} </if>
+			<if test="gmtModified != null and gmtModified != ''"> and u.gmt_modified = #{gmtModified} </if>
+			<if test="sex != null and sex != '' and sex.length > 0">
+				and u.sex in
+				<foreach collection="sex" index="index" item="item" open="("
+					separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="birth != null and birth != ''"> and u.birth = #{birth} </if>
+			<if test="picId != null and picId != ''"> and u.pic_id = #{picId} </if>
+			<if test="liveAddress != null and liveAddress != ''"> and u.live_address = #{liveAddress} </if>
+			<if test="hobby != null and hobby != ''"> and u.hobby = #{hobby} </if>
+			<if test="province != null and province != ''"> and u.province = #{province} </if>
+			<if test="city != null and city != ''"> and u.city = #{city} </if>
+			<if test="district != null and district != ''"> and u.district = #{district} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by user_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		SELECT
+		count(*)
+		FROM
+		sys_user u left join sys_dept d on d.dept_id = u.dept_id
+		<where>
+			<if test="userId != null and userId != ''"> and u.user_id = #{userId} </if>
+			<if test="username != null and username != ''"> and u.username = #{username} </if>
+			<if test="name != null and name != ''"> and u.name like CONCAT('%',#{name},'%') </if>
+			<if test="password != null and password != ''"> and u.password = #{password} </if>
+			<if test="deptId != null and deptId != ''"> and u.dept_id = #{deptId} </if>
+			<if test="email != null and email != ''"> and u.email = #{email} </if>
+			<if test="mobile != null and mobile != ''"> and u.mobile = #{mobile} </if>
+			<if test="status != null and status != '' and status.length > 0">
+				and u.status in
+				<foreach collection="status" index="index" item="item"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="userIdCreate != null and userIdCreate != ''"> and u.user_id_create = #{userIdCreate} </if>
+			<if test="gmtCreate != null and gmtCreate != ''"> and u.gmt_create = #{gmtCreate} </if>
+			<if test="gmtModified != null and gmtModified != ''"> and u.gmt_modified = #{gmtModified} </if>
+			<if test="sex != null and sex != '' and sex.length > 0">
+				and u.sex in
+				<foreach collection="sex" index="index" item="item" open="("
+					separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="birth != null and birth != ''"> and u.birth = #{birth} </if>
+			<if test="picId != null and picId != ''"> and u.pic_id = #{picId} </if>
+			<if test="liveAddress != null and liveAddress != ''"> and u.live_address = #{liveAddress} </if>
+			<if test="hobby != null and hobby != ''"> and u.hobby = #{hobby} </if>
+			<if test="province != null and province != ''"> and u.province = #{province} </if>
+			<if test="city != null and city != ''"> and u.city = #{city} </if>
+			<if test="district != null and district != ''"> and u.district = #{district} </if>
+
+			<!-- 用于查询 -->
+			<if test="validateUserId != null and validateUserId != ''"> and u.user_id != #{validateUserId} </if>
+			<if test="validateUsername != null and validateUsername != ''"> and u.username = #{validateUsername} </if>
+		</where>
+	</select>
+
+	<insert id="save"
+		parameterType="com.hu.sysManagement.system.domain.User"
+		useGeneratedKeys="true" keyProperty="userId">
+		insert into sys_user
+		(
+		`username`,
+		`name`,
+		`password`,
+		`dept_id`,
+		`email`,
+		`mobile`,
+		`status`,
+		`user_id_create`,
+		`gmt_create`,
+		`gmt_modified`,
+		`sex`,
+		`birth`,
+		`pic_id`,
+		`live_address`,
+		`hobby`,
+		`province`,
+		`city`,
+		`district`,
+		`homepage`
+		)
+		values
+		(
+		#{username},
+		#{name},
+		#{password},
+		#{deptId},
+		#{email},
+		#{mobile},
+		#{status},
+		#{userIdCreate},
+		#{gmtCreate},
+		#{gmtModified},
+		#{sex},
+		#{birth},
+		#{picId},
+		#{liveAddress},
+		#{hobby},
+		#{province},
+		#{city},
+		#{district},
+		#{homepage}
+		)
+	</insert>
+
+	<update id="updatePj"
+		parameterType="com.hu.sysManagement.system.domain.User">
+		update sys_user
+		<set>
+			<if test="username != null">`username` = #{username}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="password != null">`password` = #{password}, </if>
+			<if test="deptId != null">`dept_id` = #{deptId}, </if>
+			<if test="email != null">`email` = #{email}, </if>
+			<if test="mobile != null">`mobile` = #{mobile}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="userIdCreate != null">`user_id_create` = #{userIdCreate}, </if>
+			<if test="gmtCreate != null">`gmt_create` = #{gmtCreate}, </if>
+			<if test="gmtModified != null">`gmt_modified` = #{gmtModified}, </if>
+			<if test="sex != null">`sex` = #{sex}, </if>
+			<if test="birth != null">`birth` = #{birth}, </if>
+			<if test="picId != null">`pic_id` = #{picId}, </if>
+			<if test="liveAddress != null">`live_address` = #{liveAddress}, </if>
+			<if test="hobby != null">`hobby` = #{hobby}, </if>
+			<if test="province != null">`province` = #{province}, </if>
+			<if test="city != null">`city` = #{city}, </if>
+			<if test="district != null">`district` = #{district},</if>
+			<if test="homepage != null">`homepage` = #{homepage}</if>
+
+		</set>
+		where user_id = #{userId}
+	</update>
+
+	<delete id="remove">
+		delete from sys_user where user_id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from sys_user where user_id in
+		<foreach item="userId" collection="array" open="("
+			separator="," close=")">
+			#{userId}
+		</foreach>
+	</delete>
+
+	<select id="listAllDept" resultType="long">
+		select DISTINCT dept_id from sys_user
+	</select>
+</mapper>

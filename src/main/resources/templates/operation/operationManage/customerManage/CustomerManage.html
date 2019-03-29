@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div id='panel-1' class="cpanel col-sm-6">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="ibox-title">
+						<div class="pull-left">
+							<h5>客户列表</h5>
+						</div>
+						<div  class="pull-right" >
+							<i id='resizeBtn-1' class="btn fa fa-expand" onclick="panelResize('panel-1','resizeBtn-1')"></i>
+						</div>
+					</div>
+					<div class="ibox-button">
+						<div class="columns pull-right">
+							<button shiro:hasPermission="operation:customer:add" type="button"
+								class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="operation:customer:edit" type="button"
+								class="btn  btn-primary" onclick="edit()">
+								<i class="fa fa-plus" aria-hidden="true"></i>修改
+							</button>
+							<button shiro:hasPermission="operation:customer:remove"
+								type="button" class="btn  btn-danger" onclick="remove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+						</div>
+					
+						<div class="columns pull-left col-md-4 nopadding">
+							<input id="customerNameSearch" name="customerNameSearch" type="text" class="form-control  enterSearch"
+								placeholder="客户名称">
+						</div>
+						
+						<div class="columns pull-left">
+							<button class="btn btn-success" onclick="$.switcher()">
+								<i id="switch" class="fa fa-angle-down"></i>
+							</button>
+						</div>
+						<br/>
+						<br/>
+						<div id="search" style="display: none;">
+							<form  class="form-horizontal" id="signupFormSearch">
+								<table>
+									<tr>
+										<th width="300px">
+											<div class="form-group search-form">
+												<label class="col-sm-5 control-label">平台名称：</label>
+												<div class="col-sm-7">
+													<select id="platIdSearch" name="platIdSearch" class="form-control">
+														<option value='' selected>全部</option>
+													</select>
+												</div>
+											</div>
+										</th>
+										<th width="300px">
+											<div class="form-group search-form">
+												<label class="col-sm-5 control-label">系统名称：</label>
+												<div class="col-sm-7">
+													<select id="sysIdSearch" name="sysIdSearch" onchange="reLoad()" class="form-control">
+														<option value='' selected>全部</option>
+													</select>
+												</div>
+											</div>
+										</th>
+									</tr>
+				
+									<tr data-toggle="distpicker">
+										<th width="300px">
+											<div class="form-group search-form">
+												<label class="col-sm-5 control-label">客户地址：</label>
+												<div class="col-sm-7">
+													<select id="pAddressSearch" name="pAddressSearch" data-province="全部省份" class="form-control">
+
+													</select>
+												</div>
+											</div>
+										</th>
+										<th width="300px">
+											<div class="form-group search-form">
+												<label class="col-sm-5 control-label"></label>
+												<div class="col-sm-7">
+													<select id="cAddressSearch" name="cAddressSearch" data-city="全部城市" onchange="reLoad()" class="form-control">
+													</select>
+												</div>
+											</div>
+										</th>
+									</tr>
+			
+									<tr>
+										<th width="300px">
+											<label class="col-sm-5 control-label">用户状态：</label>
+											<select name='stateSearch' class="ui-choose" multiple="multiple" id="stateSearch">
+                                        		<option th:each="state:${cusState}"   th:value="${state.value}" th:text="${state.name}"></option>
+									        </select>
+										</th>
+										<th width="300px">
+											<label class="col-sm-5 control-label">用户属性：</label>
+											<select name='propertySearch' class="ui-choose" multiple="multiple" id="propertySearch">
+                                        		<option th:each="property:${cusProperty}"   th:value="${property.value}" th:text="${property.name}"></option>
+									        </select>
+										</th>
+									</tr>
+									<tr>
+										<th width="300px">
+											<div class="form-group search-form">
+												<label class="col-sm-5 control-label">所属片区：</label>
+												<div class="col-sm-7">
+													<select id="districtIdSearch" name="districtIdSearch" onchange="reLoad()" class="form-control">
+														<option value='' selected>全部</option>
+													</select>
+												</div>
+											</div>
+										</th>
+									</tr>
+								</table>
+							</form>
+						</div>
+					</div>
+					<div class='list-content pre-scrollable'>
+						<table id="exampleTable"  data-mobile-responsive="true"> </table>
+					</div>
+				</div>
+			</div>
+		</div>
+	    <div id='panel-2' class="cpanel col-sm-6" style="height:100%">
+	    	<input id="opt" name="opt" type="hidden">
+			<form class="form-horizontal" id="signupForm">
+				<div class="ibox ibox-body">
+					<div class="ibox-title ">
+						<div class="pull-left">
+							<h5>详细信息</h5>
+						</div>
+						<div  class="pull-right" >
+							<i id='resizeBtn-2' class="btn fa fa-expand" onclick="panelResize('panel-2','resizeBtn-2')"></i>
+						</div>
+					</div>
+					<div class="ibox-button">
+						<div class="pull-right">
+						 	<button id="giveupbtn"  class="btn btn-primary hidden"  type="button"> 放弃 </button> 
+						</div>
+						<div class="pull-right">
+						 	<button id="savebtn"  style="margin-right:10px" class="btn btn-primary hidden"  type="submit"> 保存 </button> 
+						</div>
+					</div>
+					
+					<div class="ibox-content pre-scrollable">
+						<input id="customerId" name="customerId" type="hidden">
+						<input id="csId" name="csId" type="hidden">
+						<table>	
+							<tr>
+								<th>
+									<div class="form-group">
+										<label class="col-sm-4 control-label" style="text-align: left">客户名称：</label>
+										<div class="col-sm-7" style="z-index : 1">
+											<input id="customerName" name="customerName"  readonly="readonly" class="form-control" type="text">
+										</div>
+									</div>
+								</th>
+								<th>
+									<div class="form-group">
+										<label class="col-sm-5 control-label" style="text-align: left">联系人：</label>
+										<div class="col-sm-7">
+											<input id="contact" name="contact"  readonly="readonly" class="form-control" type="text">
+										</div>
+									</div>
+								</th>
+								
+							</tr>
+							<tr id="adress-distpicker">
+								<th>
+									<div class="form-group">
+										<label class="col-sm-4 control-label" style="text-align: left">客户地址：</label>
+										<div class="col-sm-7">
+											<select id="customerAddressP_" name="customerAddressP_" class="form-control"></select>
+											<input id="customerAddressP" name="customerAddressP" type="hidden"/>
+										</div>
+									</div>
+								</th>
+								<th>
+									<div class="form-group">
+										<label class="col-sm-5 control-label" style="text-align: left">&nbsp; </label>
+										<div class="col-sm-7">
+											<select id="customerAddressC_" name="customerAddressC_" class="form-control"></select>
+											<input id="customerAddressC" name="customerAddressC" type="hidden"/>
+										</div>
+									</div>
+								</th>
+							</tr>
+							<tr>
+							<tr>
+								<th>
+									<div class="form-group">
+										<label class="col-sm-4 control-label" style="text-align: left">客户属性：</label>
+										<div class="col-sm-7">
+											<select id="customerProperty" name="customerProperty" class="form-control">
+												 
+												 <option th:each="property:${cusProperty}"   th:value="${property.value}" th:text="${property.name}"></option>        
+											</select>
+										</div>
+									</div>
+								</th>
+								<th>
+									<div class="form-group">
+										<label class="col-sm-5 control-label" style="text-align: left">联系方式：</label>
+										<div class="col-sm-7">
+											<input id="contactInformation" name="contactInformation"  readonly="readonly" class="form-control" type="text">
+										</div>
+									</div>
+								</th>
+							</tr>
+							<tr>
+								<th>
+									<div class="form-group">
+										<label class="col-sm-4 control-label" style="text-align: left">状态：</label>
+										<div class="col-sm-7">
+											<select id="state" name="state" class="form-control">
+												 
+												 <option th:each="state:${cusState}"   th:value="${state.value}" th:text="${state.name}"></option>            
+											</select>
+										</div>
+									</div>
+								</th>
+								<th>
+									<div class="form-group">
+										<label class="col-sm-5 control-label" style="text-align: left">片区负责人：</label>
+										<div class="col-sm-7">
+											<input id="responsiblePerson_" name="responsiblePerson_"  readonly="readonly" class="form-control" type="text">
+											<input id="responsiblePerson" name="responsiblePerson" type="hidden">
+										</div>
+									</div>
+								</th>
+							</tr>
+							<tr>
+								<th>
+									<div class="form-group">
+										<label class="col-sm-4 control-label" style="text-align: left">培训人：</label>
+										<div class="col-sm-7">
+											<select id="trainer" name="trainer" class="form-control" >
+											                              
+											</select>
+										</div>
+									</div>
+								</th>
+								<th>
+									<div class="form-group">
+										<label class="col-sm-5 control-label" style="text-align: left">培训时间：</label>
+										<div class="col-sm-7">
+											<input id="trainerTime" name="trainerTime"  readonly="readonly" class="layer-date form-control" type="text">
+										</div>
+									</div>
+								</th>
+							</tr>
+							<tr>
+									
+								
+								<th>
+									<div class="form-group">
+										<label class="col-sm-4 control-label" style="text-align: left">系统平台：</label>
+										<div class="col-sm-7">
+											<select id="platId" name="platId" class="form-control" >
+											                              
+											</select>
+										</div>
+									</div>
+								</th>
+								
+								<th>
+									<div class="form-group">
+										<label class="col-sm-5 control-label" style="text-align: left">系统名称：</label>
+										<div class="col-sm-7">
+											<select id="sysId" name="sysId" class="form-control" >
+											                              
+											</select>
+										</div>
+									</div>
+								</th>
+								
+							</tr>
+							<tr>
+								<th>
+									<div class="form-group">
+										<label class="col-sm-4 control-label" style="text-align: left">培训方式：</label>
+										<div class="col-sm-7">
+											<input id="trainerMode" name="trainerMode"  readonly="readonly" class="form-control" type="text">
+										</div>
+									</div>
+								</th>
+								<th>
+									<div class="form-group">
+										<label class="col-sm-5 control-label" style="text-align: left">系统访问地址：</label>
+										<div class="col-sm-7">
+											<input id="sysUrl" name="sysUrl"  readonly="readonly" class="form-control" type="text">
+										</div>
+									</div>
+								</th>
+								
+							</tr>
+							<tr>
+								<th>
+									<div class="form-group">
+										<label class="col-sm-4 control-label" style="text-align: left">创建日期：</label>
+										<div class="col-sm-7">
+											<input id="createTime" name="createTime"  readonly="readonly" class="form-control" type="text">
+										</div>
+									</div>
+								</th>
+								
+								<th>
+									<div class="form-group">
+										<label class="col-sm-5 control-label" style="text-align: left">修改原因：</label>
+										<div class="col-sm-7">
+											<textarea id="updateReason" name="updateReason" readonly="readonly" class="form-control"></textarea>
+										</div>
+									</div>
+								</th>
+								
+								
+							</tr>
+							<tr>
+								<th colspan="2">
+									<div class="form-group">
+										<label class="col-sm-4 control-label" style="text-align: left;width:16.7%">备注：</label>
+										<div class="col-sm-7">
+											<textarea id="remark" name="remark"  readonly="readonly" class="form-control" style="width:145%"></textarea>
+										</div>
+									</div>
+								</th>
+							</tr>
+						</table>
+					</div>
+					
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/operation/operationManage/customerManage/CustomerManage.js"></script>
+	<script src="/js/jquery-ui.min.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="/css/jquery-ui.min.css">
+	<script type="text/javascript" src="/js/global.js"></script>
+</body>
+</html>

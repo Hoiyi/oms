@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hu.sysManagement.system.dao.DataPermDao">
+
+	<select id="list" resultType="com.hu.sysManagement.system.domain.DataPerm">
+		SELECT
+			data_perms_id as dataPermsId,
+			user_id as userId,
+			perms_user_id as permsUserId 
+		FROM
+			data_perm 
+		<where>
+			<if test="dataPermsId != null and dataPermsId != ''"> and data_perms_id = #{dataPermsId} </if>
+			<if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+			<if test="permsUserId != null and permsUserId != ''"> and perms_user_id = #{permsUserId} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by data_perms_id 
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		SELECT
+			count(1) 
+		FROM
+			data_perm 
+		<where>
+			<if test="dataPermsId != null and dataPermsId != ''"> and data_perms_id = #{dataPermsId} </if>
+			<if test="userId != null and userId != ''"> and user_id = #{userId} </if>
+			<if test="permsUserId != null and permsUserId != ''"> and perms_user_id = #{permsUserId} </if>
+		</where>
+	</select>
+	
+
+
+	<delete id="removeByUserId">
+		delete from data_perm where user_id=#{userId}
+	</delete>
+
+
+
+	<insert id="batchSave">
+		INSERT INTO data_perm(user_id, perms_user_id) values
+		<foreach item="item" index="index" collection="list"
+			separator=",">
+			(#{item.userId},#{item.permsUserId})
+		</foreach>
+	</insert>
+
+
+
+	<select id="listPermId" resultType="long">
+		select perms_user_id as permsUserId from
+		data_perm where
+		user_id=#{userId}
+	</select>
+
+	
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hu.sysManagement.system.dao.LoginLogDao">
+
+
+<select id="list" resultType="java.util.HashMap">
+		SELECT
+			ll.login_id as loginId,
+			ll.user_id as userId,
+			u.`name` as `name`,
+			u.username as username,
+			ll.login_ip as loginIp,
+			ll.login_time as loginTime,
+			ll.logout_time as logoutTime,
+			ll.remark as remark
+		FROM
+			login_log ll
+		LEFT JOIN `sys_user` u ON u.user_id = ll.user_id
+		<where>
+			<if test="loginId != null and loginId != ''"> and ll.login_id = #{loginId} </if>
+			<if test="userId != null and userId != ''"> and ll.user_id = #{userId} </if>
+			<if test="name != null and name != ''"> and u.name like  CONCAT('%',#{name},'%') </if>
+			<if test="loginIp != null and loginIp != ''"> and ll.login_ip like  CONCAT('%',#{loginIp},'%') </if>
+			<if test="username != null and username != ''"> and u.username like  CONCAT('%',#{username},'%') </if>
+			<if test="remark != null and remark != ''"> and remark = #{remark} </if>
+			<if test="startLoginTime != null and startLoginTime != ''"> and login_time &gt;= #{startLoginTime} </if>
+			<if test="endLoginTime != null and endLoginTime != ''"> and login_time &lt;= #{endLoginTime} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by ll.login_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*)  FROM
+			login_log ll
+		LEFT JOIN `sys_user` u ON u.user_id = ll.user_id 
+		<where>
+			<if test="loginId != null and loginId != ''"> and ll.login_id = #{loginId} </if>
+			<if test="userId != null and userId != ''"> and ll.user_id = #{userId} </if>
+			<if test="name != null and name != ''"> and u.name like  CONCAT('%',#{name},'%') </if>
+			<if test="loginIp != null and loginIp != ''"> and ll.login_ip like  CONCAT('%',#{loginIp},'%') </if>
+			<if test="username != null and username != ''"> and u.username like  CONCAT('%',#{username},'%') </if>
+			<if test="remark != null and remark != ''"> and remark = #{remark} </if>
+			<if test="startLoginTime != null and startLoginTime != ''"> and login_time &gt;= #{startLoginTime} </if>
+			<if test="endLoginTime != null and endLoginTime != ''"> and login_time &lt;= #{endLoginTime} </if>
+		</where>
+	</select>
+
+	
+</mapper>

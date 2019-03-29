@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div id="panel-1" class="cpanel col-sm-7">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="ibox-title">
+								<div class="pull-left">
+									<h5>区域列表</h5>
+								</div>
+								<div  class="pull-right" >
+									<i id='resizeBtn-1' class="btn fa fa-expand" onclick="resize('panel-1','resizeBtn-1')"></i>
+								</div>
+					</div>
+					<div class="ibox-button">
+						<div class="columns pull-left col-md-4 nopadding">
+								<input id="condition-distName" name="distName" type="text" class="form-control  onblurSearch"
+									placeholder="区域名称">
+						</div>
+						<div class="columns pull-left">
+								<button class="btn btn-success" onclick="$.switcher()">
+									<i id="switch" class="fa fa-angle-down"></i>
+								</button>
+						</div>
+						<div class="columns pull-right">
+							<button shiro:hasPermission="common:district:add" type="button"
+								class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="common:district:edit" type="button"
+								class="btn  btn-primary" onclick="edit()">
+								<i class="fa fa-edit" aria-hidden="true"></i>编辑
+							</button>
+							<button shiro:hasPermission="common:district:remove"
+								type="button" class="btn  btn-danger" onclick="remove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+						</div>
+						
+					
+					</div>
+					
+					<div class='list-content pre-scrollable'>
+						<div id="condition" style="display: none;">
+								<div class="form-group search-form">
+										<label class="col-sm-2 control-label">已选条件：</label>
+										<div class="col-sm-10">
+											<ul class="filter-header ui-choose choose-type-right">
+												<li style="display: none;" title="无条件" data-name="noCondition"  class="filter-item">无条件</li>
+											</ul>
+										</div>
+								</div>
+						</div>
+						<div id="search" style="display: none;">
+								<form  class="form-horizontal">
+									<div class="form-group search-form">
+										<label class="col-sm-3 control-label">省份：</label>
+										<div class="col-sm-4" id="condition-distpicker-province">
+											<select class="form-control selectpicker" data-live-search="true"  id="condition-province" name="province"></select>
+										</div>
+									</div>
+									 <div class="form-group search-form">
+										<label class="col-sm-3 control-label">区域描述：</label>
+										<div class="col-sm-4">
+											<input id="condition-distDes" name="distDes" placeholder="区域描述" class="form-control  onblurSearch" type="text">
+										</div>
+									</div>
+									 
+									<div class="form-group search-form">
+										<label class="col-sm-3 control-label">区域负责人：</label>
+										<div class="col-sm-9">
+											<select id="condition-principal" name="principal"  class="ui-choose" multiple="multiple" >
+                                        			<option th:each="principal:${principals}"   th:value="${principal.userId}" th:text="${principal.name}"></option>
+									        </select>
+										</div>
+									</div>
+								</form>
+						</div>
+						<table id="exampleTable" data-mobile-responsive="true"> </table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id='panel-2' class="cpanel col-sm-5 " >
+			<form class="form-horizontal" id="signupForm">
+					<div class="ibox ibox-body">
+						<div class="ibox-title ">
+								<div class="pull-left">
+									<h5>详细信息</h5>
+								</div>
+								<div  class="pull-right" >
+									<i id='resizeBtn-2' class="btn fa fa-expand" onclick="resize('panel-2','resizeBtn-2')"></i>
+								</div>
+						</div>
+						<div class="ibox-button">
+								<div class="pull-right">
+									<button id="cancelbtn" onclick="cancel()"  class="btn btn-danger hidden"  type="button"> 
+								 		<i class="fa fa fa-close" aria-hidden="true"></i> 放弃 
+								   </button> 
+								 	<button id="savebtn"  class="btn btn-primary hidden"  type="submit"> 
+								 		<i class="fa fa-check-square-o" aria-hidden="true"></i> 保存 
+								   </button> 
+								</div>
+						</div>
+						<div class="ibox-content pre-scrollable">
+							<input id="principalId" name="principalId" type="hidden" > 
+							<input id="distId" name="distId" type="hidden" > 
+							<input id="prefecture" name="prefecture" type="hidden" > 
+							<input id="opt" name="opt" type="hidden" > 
+							<div class="form-group">
+							   
+								<label class="col-sm-3 control-label"><em class="gg-star">*</em>区域名称：</label>
+								<div class="col-sm-7">
+									<input id="distName" name="distName" placeholder="区域名称"  readonly="readonly" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">区域描述：</label>
+								<div class="col-sm-7">
+									<input id="distDes" name="distDes" placeholder="区域描述"  readonly="readonly" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">负责人：</label>
+								<div class="col-sm-7">
+									<input id="principal" name="principal" placeholder="区域负责人"  readonly="readonly" onclick="openUserTree()" disabled="disabled" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">包含省份：</label>
+								<div class="col-sm-7"  data-toggle="distpicker">
+									<select class="form-control ui-choose"  multiple="multiple" id="province" name="province"></select>
+								</div>
+                     </div>
+						</div>
+					</div>
+				</form>
+			</div>
+		
+	</div>
+
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" th:src="@{/js/appjs/sysManagement/common/district/district.js}"></script>
+	<script type="text/javascript" th:src="@{/js/global.js}"></script>
+</body>
+</html>

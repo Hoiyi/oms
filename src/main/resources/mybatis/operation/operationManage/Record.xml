@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hu.operation.operationManage.dao.RecordDao">
+	
+	<select id="list" resultType="java.util.HashMap">
+			select 
+			cm.customer_name as customerName,
+			gs.sys_name as sysName,
+			type_dict.`name` as proType,
+			pr.pro_describe as proDescribe,
+			waste_dict.`name` as wasteTime, 
+			stat_dict.`name` as proState,
+			key_dict.`name` as keyProblem,
+			pr.update_time as updateTime,
+			pr.message as message
+			from  record pr 
+			left join customer_manage cm on cm.customer_id=pr.customer_id
+			left join gas_system gs on gs.sys_id=cm.sys_id
+			left join knowledge kl on kl.kl_id=pr.knowledge_id
+			LEFT JOIN sys_dict type_dict on type_dict.`value`=pr.pro_type and type_dict.type='pro_type'
+            left join sys_dict waste_dict on waste_dict.`value`=pr.waste_time and waste_dict.type='waste_time'
+            left join sys_dict key_dict  on key_dict.`value`=pr.key_problem and key_dict.type='key_problem'
+            left join sys_dict stat_dict on stat_dict.`value`=pr.pro_state and stat_dict.type='pro_state'
+		<where>
+			<if test="customerName != null and customerName != ''"> and cm.customer_name like  CONCAT('%',#{customerName},'%')</if>
+			<if test="sysName != null and sysName != ''"> and gs.sys_name like  CONCAT('%',#{sysName},'%') </if>
+			<if test="proType != null and proType != ''"> and type_dict.`name` = #{proType} </if>
+			<if test="proDescribe != null and proDescribe != ''"> and pr.pro_describe = #{proDescribe} </if>
+			<if test="wasteTime != null and wasteTime != ''"> and waste_dict.`name` = #{wasteTime} </if>
+			<if test="proState != null and proState != ''"> and stat_dict.`name` = #{proState} </if>
+			<if test="keyProblem != null and keyProblem != ''"> and key_dict.`name` = #{keyProblem} </if>
+			<if test="updateTime != null and updateTime != ''"> and pr.update_time = #{updateTime} </if>
+			<if test="message != null and message != ''"> and pr.message = #{message} </if>
+		</where>
+		<choose>
+			<when test="updateTime != null and updateTime.trim() != ''">
+				order by pr.updateTime desc
+			</when>
+			<otherwise>
+				order by pr.pr_id 
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from pro_record 
+		<where>
+			<if test="reId != null and reId != ''"> and re_id = #{reId} </if>
+			<if test="wasteTime != null and wasteTime != ''"> and waste_time = #{wasteTime}  </if>
+			<if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+			<if test="proType != null and proType != ''"> and pro_type = #{proType} </if>
+			<if test="proDescibe != null and proDescibe != ''"> and pro_descibe like  CONCAT('%',#{proDescibe},'%') </if>
+			<if test="keyProblem != null and keyProblem != ''"> and key_problem = #{keyProblem} </if>
+			<if test="proState != null and proState != ''"> and pro_state = #{proState} </if>
+			<if test="message != null and message != ''"> and message = #{message} </if>
+			<if test="knowledgeId != null and knowledgeId != ''"> and knowledge_id = #{knowledgeId} </if>
+			<if test="sysId != null and sysId != ''"> and sys_id = #{sysId} </if>
+			<if test="customerId != null and customerId != ''"> and customer_id = #{customerId} </if>
+		</where>
+	</select>
+</mapper>

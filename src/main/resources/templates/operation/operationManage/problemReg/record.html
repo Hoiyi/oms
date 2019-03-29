@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div id='panel-1' class="cpanel col-sm-7 ">
+			<div class="ibox">
+				<div class="ibox-body">
+					<div class="ibox-title">
+						<div class="pull-left">
+							<h5>客户列表</h5>
+						</div>
+						<div class="pull-right">
+							<i id='resizeBtn-1' class="btn fa fa-expand"
+								onclick="panelResize('panel-1','resizeBtn-1')"></i>
+						</div>
+					</div>
+					<div class="ibox-button">
+						<div class="columns pull-right">
+							<button shiro:hasPermission="common:gasSystem:add" type="button"
+								class="btn  btn-primary" onclick="add()">
+								<i class="fa fa-plus" aria-hidden="true"></i>添加
+							</button>
+							<button shiro:hasPermission="common:gasSystem:edit" type="button"
+								class="btn  btn-primary" onclick="edit()">
+								<i class="fa fa-plus" aria-hidden="true"></i>修改
+							</button>
+							<button shiro:hasPermission="common:gasSystem:remove"
+								type="button" class="btn  btn-danger" onclick="remove()">
+								<i class="fa fa-trash" aria-hidden="true"></i>删除
+							</button>
+						</div>
+
+						<div class="columns pull-left col-md-4 nopadding">
+							<input id="proDescribeSearch" name="proDescribeSearch"
+								type="text" class="form-control  enterSearch" placeholder="问题描述">
+						</div>
+
+						<div class="columns pull-left">
+							<button class="btn btn-success" onclick="$.switcher()">
+								<i id="switch" class="fa fa-angle-down"></i>
+							</button>
+						</div>
+						<br /> <br />
+
+						 <div id="search" style="display: none;">
+							<form  class="form-horizontal" id="signupFormSearch">
+								<table>
+									<tr>
+										<th width="300px">
+											<div class="form-group search-form">
+												<label class="col-sm-5 control-label">问题类型：</label>
+												<div class="col-sm-7">
+													<select id="proTypeSearch" name="proTypeSearch" onchange="reLoad()" class="form-control">
+														<option value='' selected>全部</option>
+													</select>
+												</div>
+											</div>
+										</th>									                                                                        
+									     <th width="300px">
+											<div class="form-group search-form">
+												<label class="col-sm-5 control-label">登记人员：</label>
+												<div class="col-sm-7">
+													<select id="userSearch" name="userSearch" onchange="reLoad()" class="form-control">
+														<option value='' selected>全部</option>												
+													</select>
+												</div>
+											</div>
+										</th>
+										</tr>
+										<tr>
+										<th width="300px">
+										<div class="form-group search-form">
+											<label class="col-sm-5 control-label">问题状态：</label>
+											<div class="col-sm-7">
+											<select name='stateSearch' class="ui-choose" multiple="multiple" id="stateSearch">
+                                        		<option th:each="state:${proState}" th:value="${state.value}" th:text="${state.name}"></option>
+									        </select>
+									        </div>
+									        </div>
+										</th>
+										<th width="300px">
+										<div class="form-group search-form">
+											<label class="col-sm-5 control-label">重点问题：</label>
+											<div class="col-sm-7">
+											<select name='problemSearch' class="ui-choose" multiple="multiple" id="problemSearch">
+                                        		<option th:each="problem:${keyProblem}"   th:value="${problem.value}" th:text="${problem.name}"></option>
+									        </select>
+									        </div>
+									        </div>
+										</th>
+									 </tr>
+									 	<tr>
+										<th width="300px">
+											<div class="form-group search-form">
+												<label class="col-sm-5 control-label">所属片区：</label>
+												<div class="col-sm-7">
+													<select id="districtIdSearch" name="districtIdSearch" onchange="reLoad()" class="form-control">
+														<option value='' selected>全部</option>
+													</select>
+												</div>
+											</div>
+										</th>
+									
+									<th width="300px">
+											<div class="form-group search-form">
+												<label class="col-sm-5 control-label">耗&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;时：</label>
+												<div class="col-sm-7">
+													<select id="wasteTimeSearch" name="wasteTimeSearch" onchange="reLoad()" class="form-control">
+														<option value='' selected>全部</option>
+													</select>
+												</div>
+											</div>
+										</th>
+										</tr>
+								</table>
+							</form>
+						</div> 
+
+					</div>
+					<div class='list-content pre-scrollable'>
+						<table id="exampleTable" data-mobile-responsive="true">
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id='panel-2' class="cpanel col-sm-5" style="height: 100%">
+			<input id="opt" name="opt" type="hidden">
+
+			<form class="form-horizontal" id="signupForm">
+				<div class="ibox ibox-body">
+					<div class="ibox-title ">
+						<div class="pull-left">
+							<h5>详细信息</h5>
+						</div>
+						<div class="pull-right">
+							<i id='resizeBtn-2' class="btn fa fa-expand"
+								onclick="panelResize('panel-2','resizeBtn-2')"></i>
+						</div>
+					</div>
+					<div class="ibox-button">
+						<div class="pull-right">
+							<button id="giveupbtn" class="btn btn-primary hidden"
+								type="button">放弃</button>
+						</div>
+						<div class="pull-right">
+							<button id="savebtn" style="margin-right: 10px"
+								class="btn btn-primary hidden" type="submit">保存</button>
+						</div>
+					</div>
+
+					<div class="ibox-content pre-scrollable">
+						<input id="reId" name="reId" type="hidden">
+						<input id="userName" name="userName" type="hidden">
+						<input id="userId" name="userId" type="hidden">
+					    <input id="customerId" name="customerId" type="hidden">  
+						<input id="responsiblePerson" name="responsiblePerson" type="hidden">
+						<input id="sysId" name="sysId" type="hidden"> 
+							
+						   
+						   <div class="form-group">
+							<label class="col-sm-3 control-label">客户名称：</label>
+							<div class="columns col-md-8">
+								<input id="customerName" name="customerName" class="form-control" />
+						   </div>
+						</div> 
+						
+						 <div class="form-group">
+							<label class="col-sm-3 control-label">使用系统：</label>
+							<div class="col-sm-8">
+								<select id="sysName" name="sysName" class="form-control"></select>
+							</div>
+						</div>   
+						
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label">问题描述：</label>
+							<div class="col-md-8">
+								<input id="proDescribe" name="proDescribe" class="form-control" />
+						   </div>
+						</div>	
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label ">问题类型：</label>
+							<div class="col-sm-8 ">
+								<select id="proType" name="proType" class="form-control">
+								</select>
+							</div>
+						</div>
+
+					 
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label ">耗时：</label>
+							<div class="col-sm-8 ">
+								<select id="wasteTime" name="wasteTime" class="form-control">
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label ">问题状态：</label>
+							<div class="col-sm-8 ">
+								<select id="proState" name="proState" class="form-control">
+								</select>
+							</div>
+						</div>
+                          <div class="form-group">
+							<label class="col-sm-3 control-label ">重点问题：</label>
+							<div class="col-sm-8 ">
+								<select id="keyProblem" name="keyProblem" class="form-control">
+								</select>
+							</div>
+						</div>
+					
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label">更新时间：</label>
+							<div class="col-sm-8">
+								<input id="updateTime" name="updateTime" readonly="readonly" class="form-control" type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">备注：</label>
+							<div class="col-sm-8">
+								<textarea id="message" name="message" class="form-control">
+								</textarea>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript" src="/js/appjs/operation/operationManage/problemReg/record.js"></script>
+	<link href="/css/chosen.css" rel="stylesheet">
+	<script type="text/javascript" src="/js/chosen.jquery.js"></script>
+	<script type="text/javascript" src="/js/global.js"></script>
+	<script src="/js/jquery-ui.min.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="/css/jquery-ui.min.css">
+	<script src="/js/jquery.autocompleter.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="/css/jquery.autocompleter.css">
+</body>
+</html>

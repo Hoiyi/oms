@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hu.sysManagement.common.dao.DistrictDao">
+	
+	<select id="list" resultType="java.util.HashMap">
+		SELECT
+			d.dist_id as distId,
+			d.dist_name as distName,
+			d.dist_des as distDes,
+			d.principal_id as principalId,
+			u.`name` as principal,
+			d.prefecture as prefecture
+		FROM
+			district d
+		LEFT JOIN sys_user u ON d.principal_id = u.user_id 
+		<where>
+			<if test="distId != null and distId != ''"> and dist_id = #{distId} </if>
+			<if test="principalId != null and principalId != '' and principalId.length > 0">
+			  		   	and u.user_id in 
+				  	<foreach collection="principalId" index="index" item="item" open="(" separator="," close=")">
+		                #{item}       
+		       		</foreach>   
+		  	</if>
+			<if test="distName != null and distName != ''"> and dist_name like  CONCAT('%',#{distName},'%') </if>
+			<if test="distDes != null and distDes != ''"> and dist_des like  CONCAT('%',#{distDes},'%') </if>
+			<if test="principal != null and principal != ''"> and name like  CONCAT('%',#{principal},'%')  </if>
+			<if test="prefecture != null and prefecture != ''"> and prefecture like  CONCAT('%',#{prefecture},'%')  </if>
+			
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by dist_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+
+	<select id="principalList" resultType="com.hu.sysManagement.system.domain.User">
+		SELECT
+			u.user_id AS userId,
+			u.`name` AS `name`,
+			u.username AS username
+		FROM
+			sys_user u
+		WHERE
+			u.user_id IN (
+				SELECT DISTINCT
+					d.principal_id
+				FROM
+					district d
+			) 
+	</select>
+
+
+	<select id="count" resultType="int">
+		SELECT
+			count(*) 
+		FROM
+			district d
+		LEFT JOIN sys_user u ON d.principal_id = u.user_id
+		<where>
+			<if test="distId != null and distId != ''"> and dist_id = #{distId} </if>
+			<if test="principalId != null and principalId != '' and principalId.length > 0">
+			  		   	and u.user_id in 
+				  		  <foreach collection="principalId" index="index" item="item" open="(" separator="," close=")">
+		                #{item}       
+		       		  </foreach>   
+		  	</if>
+			<if test="distName != null and distName != ''"> and dist_name like  CONCAT('%',#{distName},'%') </if>
+			<if test="distDes != null and distDes != ''"> and dist_des like  CONCAT('%',#{distDes},'%') </if>
+			<if test="name != null and name != ''"> and name like  CONCAT('%',#{name},'%')  </if>
+			<if test="prefecture != null and prefecture != ''"> and prefecture like  CONCAT('%',#{prefecture},'%')  </if>
+			<!-- 用于验证重复 -->
+			<if test="validateId != null and distId != ''"> and dist_id != #{validateId} </if>
+			<if test="validateDistName != null and validateDistName != ''"> and dist_name =  #{validateDistName} </if>
+		</where>
+	</select>
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hu.sysManagement.common.dao.PlatformDao">
+	
+	<select id="list" resultType="com.hu.sysManagement.common.domain.Platform">
+		select `plat_id` as platId,`plat_des` as platDes,`remark` as remark,`menu_id` as menuId,`icon` as icon from platform
+		<where>
+			<if test="platId != null and platId != ''"> and plat_id = #{platId} </if>
+			<if test="platDes != null and platDes != ''"> and plat_des like  CONCAT('%',#{platDes},'%') </if>
+			<if test="remark != null and remark != ''"> and remark = #{remark} </if>
+			<if test="menuId != null and menuId != ''"> and menu_id = #{menuId} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by plat_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from platform 
+		<where>
+			<if test="platId != null and platId != ''"> and plat_id = #{platId} </if>
+			<if test="platDes != null and platDes != ''"> and plat_des like  CONCAT('%',#{platDes},'%') </if>
+			<if test="remark != null and remark != ''"> and remark = #{remark} </if>
+			<if test="menuId != null and menuId != ''"> and menu_id = #{menuId} </if>
+			
+			
+			<!-- 用于验证 -->
+			<if test="validatePlatId != null and validatePlatId != ''"> and plat_id != #{validatePlatId} </if>
+			<if test="validatePlatDes != null and validatePlatDes != ''"> and plat_des =  #{validatePlatDes} </if>
+		</where>
+	</select>
+
+
+
+</mapper>

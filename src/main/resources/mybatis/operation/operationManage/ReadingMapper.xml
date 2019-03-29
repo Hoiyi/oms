@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hu.operation.operationManage.dao.ReadingDao">
+	<select id="list" resultType="java.util.HashMap">
+		SELECT
+		rd.r_id AS rId,
+		gs.sys_name AS sysName,
+		rd.daily_quantity AS dailyQuantity,
+		rd.reading_value AS readingValue,
+		rd.execute_state AS executeState,
+		rd.write_time AS writeTime,
+		rd.update_time AS updateTime,
+		su.name AS name,
+		rd.sys_id AS sysId,
+		rd.user_id AS userId,
+		rd.remarks
+		FROM
+		reading rd
+		LEFT JOIN gas_system gs ON gs.sys_id = rd.sys_id
+		LEFT JOIN sys_user su ON su.user_id = rd.user_id
+		<where>
+			<if test="rId != null and rId != ''"> and rd.r_id = #{rId} </if>
+			<if test="sysName != null and sysName != ''"> and gs.sys_name = #{sysName} </if>
+			<if test="dailyQuantity != null and dailyQuantity != ''"> and rd.daily_quantity = #{dailyQuantity} </if>
+			<if test="startReadingValue != null and startReadingValue != ''"> and rd.reading_value &gt;= #{startReadingValue} </if>
+			<if test="endReadingValue != null and endReadingValue != ''"> and rd.reading_value &lt;= #{endReadingValue} </if>
+			<if test="executeState != null and executeState != '' and executeState.length > 0">and rd.execute_state in
+				<foreach collection="executeState" index="index" item="item"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="startWriteTime != null and startWriteTime != ''"> and write_time &gt;= #{startWriteTime} </if>
+			<if test="endWriteTime != null and endWriteTime != ''"> and write_time &lt;= #{endWriteTime} </if>
+			<if test="name != null and name != ''"> and su.name like CONCAT('%',#{name},'%' </if>
+			<if test="sysId != null and sysId != ''"> and rd.sys_id = #{sysId} </if>
+			<if test="userId != null and userId != ''"> and rd.user_id = #{userId} </if>
+			<if test="remarks != null and remarks != ''"> and rd.remarks = #{remarks} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by writeTime desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from reading rd
+		<where>
+			<if test="rId != null and rId != ''"> and rd.r_id = #{rId} </if>
+			<if test="sysName != null and sysName != ''"> and gs.sys_name = #{sysName} </if>
+			<if test="dailyQuantity != null and dailyQuantity != ''"> and rd.daily_quantity = #{dailyQuantity} </if>
+			<if test="startValue != null and startValue != ''"> and rd.reading_value &gt;= #{startValue} </if>
+			<if test="endValue != null and endValue != ''"> and rd.reading_value &lt;= #{endValue} </if>
+			<if test="executeState != null and executeState != '' and executeState.length > 0"> and rd.execute_state in
+				<foreach collection="executeState" index="index" item="item"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="startReadingValue != null and startReadingValue != ''"> and rd.reading_value &gt;= #{startReadingValue} </if>
+			<if test="endReadingValue != null and endReadingValue != ''"> and rd.reading_value &lt;= #{endReadingValue} </if>
+			<if test="name != null and name != ''"> and su.name like CONCAT('%',#{name},'%'</if>
+			<if test="sysId != null and sysId != ''"> and rd.sys_id = #{sysId} </if>
+			<if test="userId != null and userId != ''"> and rd.user_id = #{userId} </if>
+			<if test="remarks != null and remarks != ''"> and rd.remarks = #{remarks} </if>
+		</where>
+	</select>
+
+
+	<select id="userList" resultType="java.util.HashMap">
+		SELECT DISTINCT
+		r.user_id AS userId, s.username AS userName, s.name As
+		name
+		FROM
+		reading r
+		LEFT JOIN sys_user s ON s.user_id = r.user_id
+		<where>
+			<if test="userId != null and userId != ''"> and r.user_id = #{userId} </if>
+			<if test="userName != null and userName != ''"> and s.username = #{userName} </if>
+			<if test="name != null and name != ''"> and s.name = #{name} </if>
+		</where>
+	</select>
+
+	<select id="amount" resultType="int">
+		select count(*) from reading r
+		<where>
+			<if test="userId != null and userId != ''"> and r.user_id = #{userId} </if>
+			<if test="userName != null and userName != ''"> and s.username = #{userName} </if>
+			<if test="name != null and name != ''"> and s.name = #{name} </if>
+		</where>
+	</select>
+</mapper>

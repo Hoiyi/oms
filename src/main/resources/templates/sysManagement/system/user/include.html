@@ -1,0 +1,30 @@
+<head th:fragment="header">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+	<link rel="stylesheet" th:href="@{/css/animate.css}" />
+	<link rel="stylesheet" th:href="@{/css/font-awesome.css}" />
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<link rel="stylesheet" th:href="@{/css/plugins/iCheck/custom.css}" />
+	<link rel="stylesheet" th:href="@{/css/plugins/cropper/cropper.css}" />
+<!-- 	<link rel="stylesheet" href="/js/plugins/layer/laydate/skins/default/laydate.css" /> -->
+	<link rel="stylesheet" th:href="@{/css/index.css}" />
+</head>
+<div th:fragment="footer">
+	<script type="text/javascript" th:src="@{/js/jquery.min.js}" ></script>
+	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}" ></script>
+	<script type="text/javascript" th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/plugins/cropper/cropper.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/plugins/layer/laydate/laydate.js}" ></script>
+	<script type="text/javascript" th:src="@{/js/plugins/distpicker/distpicker.data.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/plugins/distpicker/distpicker.js}"></script>
+	<script type="text/javascript" th:src="@{/js/appjs/sysManagement/sys/user/gg-user.js}"></script>
+	<!--校验插件-->
+	<script type="text/javascript" th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/plugins/validate/jquery.validate.extend.js}"></script>
+	<script type="text/javascript" th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+	<script th:src="@{/js/jQuery.Hz2Py-min.js}" type="text/javascript"></script>
+	<script type="text/javascript" th:inline="javascript">
+        var ctx = [[@{/}]];
+	</script>
+</div>

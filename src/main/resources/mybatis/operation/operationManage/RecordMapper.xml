@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hu.operation.operationManage.dao.RecordDao">
+
+	<select id="AllRecord" resultType="com.hu.operation.operationManage.domain.Record">
+		select record.* from record
+	</select>
+	
+	<select id="queryCusName" resultType="com.hu.operation.operationManage.domain.Customer"
+		parameterType="java.lang.String">
+		select cm.customer_name as customerName,cm.customer_id as customerId,cm.responsible_person as ResponsiblePerson from customer_manage cm 
+		where cm.customer_name like  CONCAT('%',#{customerName},'%')
+	</select>
+	
+	<select id="gaslist" resultType="java.util.HashMap">
+		select cm.customer_id as customerId,cm.customer_name as customerName,cs.sys_id as sysId,gs.sys_name as sysName from customer_manage cm
+    	left join customer_sys cs on cs.customer_id=cm.customer_id
+		left join gas_system gs on gs.sys_id=cs.sys_id
+		<where>
+		    <if test="customerId != null and customerId != ''"> and cm.customer_id = #{customerId} </if>
+		    <if test="customerName != null and customerName != ''"> and cm.customer_name = #{customerName} </if>
+		     <if test="sysId != null and sysId != ''"> and cs.sys_id = #{sysId} </if>
+		    <if test="sysName != null and sysName != ''"> and gs.sys_name = #{sysName} </if>
+		    </where>
+	</select>
+	
+	
+	<select id="queryDescribe" resultType="com.hu.knowledge.knowledgeStore.domain.Knowledge"
+		parameterType="java.lang.String">
+		select kl.kl_id as klId,kl.`describe` as `describe` from knowledge kl 
+		where kl.`describe` like  CONCAT('%',#{`describe`},'%')
+	</select>
+	
+	
+	<select id="list" resultType="java.util.HashMap">
+			select
+			pr.re_id as reId, 
+			cm.customer_name as customerName,
+      		cm.customer_id as customerId,
+      		cm.responsible_person as ResponsiblePerson,
+			gs.sys_name as sysName,
+			pr.sys_id as sysId,
+			type_dict.`name` as proTypeNmae,
+	    	pr.pro_type as proType,
+			pr.pro_describe as proDescribe,
+			waste_dict.`name` as wasteTimeName,
+     	 	pr.waste_time as wasteTime, 
+			stat_dict.`name` as proStateName,
+     		pr.pro_state as proState,
+			key_dict.`name` as keyProblemName,
+      		pr.key_problem as keyProblem,
+			pr.update_time as updateTime,
+			pr.message as message,
+      		su.user_id as userId,
+      		su.username as userName
+			from  record pr 
+			left join customer_manage cm on cm.customer_id=pr.customer_id
+			left join gas_system gs on gs.sys_id=pr.sys_id
+			left join knowledge kl on kl.kl_id=pr.knowledge_id
+			LEFT JOIN sys_dict type_dict on type_dict.`value`=pr.pro_type and type_dict.type='pro_type'
+      		left join sys_dict waste_dict on waste_dict.`value`=pr.waste_time and waste_dict.type='waste_time'
+      		left join sys_dict key_dict  on key_dict.`value`=pr.key_problem and key_dict.type='key_problem'
+      		left join sys_dict stat_dict on stat_dict.`value`=pr.pro_state and stat_dict.type='pro_state'
+     		left join sys_user su on su.user_id=pr.user_id
+		<where>
+		    <if test="reId != null and reId != ''"> and pr.re_id = #{reId} </if>
+		    <if test="customerId != null and customerId != ''"> and cm.customer_id = #{customerId} </if>
+			<if test="customerName != null and customerName != ''"> and cm.customer_name like  CONCAT('%',#{customerName},'%')</if>
+			<if test="sysId != null and sysId != ''"> and pr.sys_id = #{sysId} </if>
+			<if test="sysName != null and sysName != ''"> and gs.sys_name like  CONCAT('%',#{sysName},'%') </if>	
+			<if test="proType != null and proType != ''"> and pr.pro_type = #{proType} </if>
+			<if test="wasteTime != null and wasteTime != ''"> and pr.waste_time = #{wasteTime} </if>
+			<if test="proState != null and proState != ''"> and pr.pro_state = #{proState} </if>
+			<if test="keyProblem != null and keyProblem != ''"> and pr.key_problem = #{keyProblem} </if>
+			<if test="proTypeNmae != null and proTypeNmae != ''"> and type_dict.`name` = #{proTypeNmae} </if>
+			<if test="proDescribe != null and proDescribe != ''"> and pr.pro_describe like CONCAT('%',#{proDescribe},'%')</if>
+			<if test="wasteTimeName != null and wasteTimeName != ''"> and waste_dict.`name` = #{wasteTimeName} </if>
+			<if test="proStateName != null and proStateName != ''"> and stat_dict.`name` = #{proStateName} </if>
+			<if test="keyProblemName != null and keyProblemName != ''"> and key_dict.`name` = #{keyProblemName} </if>
+			<if test="updateTime != null and updateTime != ''"> and pr.update_time = #{updateTime} </if>
+			<if test="message != null and message != ''"> and pr.message = #{message} </if>
+			<if test="ResponsiblePerson != null and ResponsiblePerson != ''"> and cm.responsible_person = #{ResponsiblePerson} </if>
+			<if test="userId != null and userId != ''"> and su.user_id = #{userId} </if>
+			<if test="userName != null and userName != ''"> and su.username like CONCAT('%',#{userName},'%')</if>
+		</where>
+		<choose>
+			<when test="updateTime != null and updateTime.trim() != ''">
+				order by pr.updateTime desc
+			</when>
+			<otherwise>
+				order by reId desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from record 
+		<where>
+			<if test="reId != null and reId != ''"> and re_id = #{reId} </if>
+			<if test="wasteTime != null and wasteTime != ''"> and waste_time = #{wasteTime}  </if>
+			<if test="updateTime != null and updateTime != ''"> and update_time = #{updateTime} </if>
+			<if test="proType != null and proType != ''"> and pro_type = #{proType} </if>
+			<if test="proDescibe != null and proDescibe != ''"> and pro_descibe like  CONCAT('%',#{proDescibe},'%') </if>
+			<if test="keyProblem != null and keyProblem != ''"> and key_problem = #{keyProblem} </if>
+			<if test="proState != null and proState != ''"> and pro_state = #{proState} </if>
+			<if test="message != null and message != ''"> and message = #{message} </if>
+			<if test="knowledgeId != null and knowledgeId != ''"> and knowledge_id = #{knowledgeId} </if>
+			<if test="sysId != null and sysId != ''"> and sys_id = #{sysId} </if>
+			<if test="customerId != null and customerId != ''"> and customer_id = #{customerId} </if>
+		</where>	</select>
+	
+
+</mapper>

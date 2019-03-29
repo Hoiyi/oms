@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hu.sysManagement.common.dao.GasSystemDao">
+	
+	<select id="list" resultType="java.util.HashMap">
+			SELECT
+				gs.sys_id AS sysId,
+				gs.sys_name AS sysName,
+				gs.gmt_create AS gmtCreate,
+				gs.plat_id as platId,
+				p.plat_des as platform,
+				gs.gmt_modified AS gmtModified,
+				gs.menu_id AS menuId,
+				gs.first_dept_id as firstDeptId,
+				fd.`name` AS firstDept,
+				gs.second_dept_id as secondDeptId,
+				sd.`name` AS secondDept,
+				gs.gas_system_use as gasSystemUse
+			FROM
+				gas_system gs
+			LEFT JOIN sys_dept fd ON gs.first_dept_id = fd.dept_id
+			LEFT JOIN sys_dept sd ON sd.dept_id = gs.second_dept_id
+			LEFT JOIN sys_menu sm ON sm.menu_id = gs.menu_id
+			LEFT JOIN platform p ON p.plat_id = gs.plat_id
+		<where>
+			<if test="sysId != null and sysId != ''"> and gs.sys_id = #{sysId} </if>
+			<if test="sysName != null and sysName != ''"> and gs.sys_name like  CONCAT('%',#{sysName},'%') </if>
+			<if test="gmtCreate != null and gmtCreate != ''"> and gs.gmt_create = #{gmtCreate} </if>
+			<if test="gmtModified != null and gmtModified != ''"> and gs.gmt_modified = #{gmtModified} </if>
+			<if test="firstDept != null and firstDept != ''"> and gs.first_dept = #{firstDept} </if>
+			<if test="secondDept != null and secondDept != ''"> and gs.second_dept = #{secondDept} </if>
+			<if test="platId != null and platId != ''"> and gs.plat_id = #{platId} </if>
+			<if test="menuId != null and menuId != ''"> and gs.menu_id = #{menuId} </if>
+			<if test="gasSystemUse != null and gasSystemUse != ''"> and gs.gas_system_use = #{gasSystemUse} </if>
+			
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by gs.sys_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		SELECT 
+				count(*) 
+			FROM 
+				gas_system gs 
+			LEFT JOIN sys_dept fd ON gs.first_dept_id = fd.dept_id 
+			LEFT JOIN sys_dept sd ON sd.dept_id = gs.second_dept_id 
+			LEFT JOIN sys_menu sm ON sm.menu_id = gs.menu_id 
+			LEFT JOIN platform p ON p.plat_id = gs.plat_id 
+		<where>
+			<if test="sysId != null and sysId != ''"> and gs.sys_id = #{sysId} </if>
+			<if test="sysName != null and sysName != ''"> and gs.sys_name like  CONCAT('%',#{sysName},'%') </if>
+			<if test="gmtCreate != null and gmtCreate != ''"> and gs.gmt_create = #{gmtCreate} </if>
+			<if test="gmtModified != null and gmtModified != ''"> and gs.gmt_modified = #{gmtModified} </if>
+			<if test="firstDept != null and firstDept != ''"> and gs.first_dept = #{firstDept} </if>
+			<if test="secondDept != null and secondDept != ''"> and gs.second_dept = #{secondDept} </if>
+			<if test="platId != null and platId != ''"> and gs.plat_id = #{platId} </if>
+			<if test="menuId != null and menuId != ''"> and gs.menu_id = #{menuId} </if>
+			<if test="gasSystemUse != null and gasSystemUse != ''"> and gs.gas_system_use = #{gasSystemUse} </if>
+			
+			<!-- 用于验证重复 -->
+			<if test="validateSysId != null and validateSysId != ''"> and gs.sys_id != #{validateSysId} </if>
+			<if test="validateSysName != null and validateSysName != ''"> and gs.sys_name = #{validateSysName} </if> 
+		</where>
+		
+	</select>
+</mapper>

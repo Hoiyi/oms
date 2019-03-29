@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header">
+<title> new document </title>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<meta name="author" content="" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<link rel="stylesheet" type="text/css" href="" />
+<link rel="stylesheet" type="text/css" href=/css/appStyle/operation/duty/MonthDuty/addDutyEmp.css">
+<script type="text/javascript"></script>
+
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+ <script type="text/javascript" src="/js/ui-choose.js"></script> 
+<script type="text/javascript" src="/js/appjs/operation/duty/MonthDuty/smartCycle.min.js"></script>
+<META NAME="Description" CONTENT="Power by hill"> 
+</head>
+<body>
+<style type="text/css">
+	table{
+		border:0;
+		width:500px; 
+	}
+	.tdwidth1{
+		width:40%;
+	}
+	.tdwidth2{
+		width:20%;
+	}
+	.btnwidth{
+		width:50%;
+	}
+	.selectwidth{
+		width:200px;
+	}
+</style>
+<form method="post" name="myform"> 
+<table align="center"> 
+	<tr><td colspan="4">&nbsp;</td></tr>
+	<tr> 
+		<td class="tdwidth"> 
+				<select id="user-choose" class="ui-choose"  >
+               <option id="select-choose" th:each="list:${dutyList}"   th:value="${list}" th:text="${list}"></option>
+		</select>
+		</td>  
+	</tr>  
+	<tr><td colspan="4">&nbsp;</td></tr>
+	<tr align="center"><td colspan="8"><button class="btn  btn-primary btnwidth" onclick="setEmp()" type="button">确定</button></td></tr>
+	
+</table> 
+
+</form> 
+
+<div th:include="include :: footer"></div>
+
+<script language="JavaScript"> 
+var userChoose;
+$(function(){
+	$('.ui-choose').ui_choose();
+	 userChoose = $("#user-choose").ui_choose();
+	userChoose.select("");
+	
+})
+ 
+function setEmp(){
+	var obj = document.getElementById("user-choose");
+	var str=obj.selectedIndex;
+	//var str=obj.options[index].text;
+	//alert(index);
+	
+	  $.ajax({
+			type:'POST',
+			data:JSON.stringify(str)+","+3,
+			contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+			scriptCharset: 'GBK',
+			url:'/duty/MonthDuty/setCurrDuty',
+			async:false,
+			success:function(data){
+			},
+			error:function(e){
+				console.log("发送失败");
+	    	}
+		});  
+	  //alert(1);
+	parent.reLoad();
+	var index = parent.layer.getFrameIndex(window.name); // 获取窗口索引
+	parent.layer.close(index);
+} 
+</script> 
+</body>
+</html>

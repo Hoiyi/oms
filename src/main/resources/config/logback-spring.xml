@@ -1,0 +1,120 @@
+<!-- ch.qos.logback.classic.filter.ThresholdFilter  临界值过滤器, 过滤掉低于指定临界值的日志
+ch.qos.logback.classic.filter.LevelFilter   将过滤器的日志级别配置为INFO，所有INFO级别的日志交给appender处理，非INFO级别的日志，被过滤掉。 -->
+<configuration>
+	<property name="APP_Name" value="oms" /> 
+	<property name="log.dir" value="../logs"></property> 
+	<timestamp key="bySecond" datePattern="yyyyMMdd HHmmss"/>
+	<contextName>${APP_Name}</contextName>
+ 
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{85} [%file:%line] - %msg%n</Pattern>
+		</layout>
+	</appender>
+ 
+	<!-- 按日期和大小区分的滚动日志 -->
+	<appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<encoder>
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{85} - %msg%n</Pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.dir}/${APP_Name}/info.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+			<maxHistory>30</maxHistory>
+ 
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+	</appender>
+ 
+ 
+	<!-- 按日期和大小区分的滚动日志 -->
+	<appender name="FILE_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- 必须指定，否则不会往文件输出内容 -->
+		<encoder>
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{85} - %msg%n</Pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>DEBUG</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+ 
+		<!-- 必需要指定rollingPolicy 与 triggeringPolicy 属性   否则不会生成文件-->
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.dir}/${APP_Name}/debug.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+			<maxHistory>30</maxHistory>
+ 
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+ 
+		</rollingPolicy>
+	</appender>
+ 
+ 
+	<!-- error级别只按日期滚动生成日志 -->
+	<appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- 必须指定，否则不会往文件输出内容 -->
+		<encoder>
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{85} - %msg%n</Pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+			<!--	<onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>-->
+		</filter>
+ 
+		<!-- 必需要指定rollingPolicy 与 triggeringPolicy 属性   否则不会生成文件-->
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.dir}/${APP_Name}/error.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<!-- 默认值是10MB。 -->
+		<!--     <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+                  <maxFileSize>5MB</maxFileSize>
+            </triggeringPolicy>  -->
+	</appender>
+ 
+	<!-- 滚动记录文件 -->
+	<appender name="MONITOR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<encoder>
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{85} - %msg%n</Pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DEBUG</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.dir}/${APP_Name}/monitor.%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+	</appender>
+ 
+	<logger name="org" level="INFO" />  <!--将org包下面的所有日志级别设为了ERROR -->
+	<logger name="monitor" additivity="false" level="DEBUG" />
+ 
+	<logger name="monitor" additivity="false" level="DEBUG">
+		<appender-ref ref="MONITOR" />
+	</logger>
+ 
+	<root level="DEBUG">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE_INFO" />
+		<appender-ref ref="FILE_DEBUG" /> <!-- 上线后注释掉 -->
+		<appender-ref ref="FILE_ERROR" />
+	</root>
+</configuration>

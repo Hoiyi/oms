@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hu.knowledge.knowledgeStore.dao.KnowledgeDao">
+	
+	<select id="list" resultType="java.util.HashMap">
+			SELECT
+				kl.kl_id as klId,
+				kl.kl_class_id as klClassId,
+				ks.kl_class_name as klClass,
+				kl.`describe` as `describe`,
+				kl.content as content,
+				kl.gmt_create as gmtCreate,
+				kl.gmt_modified as gmtModified,
+				kl.plat_id as platId,
+				p.plat_des as platDes,
+				kl.sys_id as sysId,
+				gs.sys_name as sysName
+			FROM
+				knowledge kl
+			LEFT JOIN gas_system gs ON gs.sys_id = kl.sys_id
+			left join knowledge_class ks on ks.kl_class_id = kl.kl_class_id
+			LEFT JOIN platform p ON p.plat_id = kl.plat_id
+		<where>
+			<if test="klId != null and klId != ''"> and kl.kl_id = #{klId} </if>
+			<if test="klClassId != null and klClassId != ''"> and kl.kl_class_id = #{klClassId} </if>
+			<if test="klClass != null and klClass != ''"> and ks.kl_class_name like  CONCAT('%',#{klClass},'%') </if>
+			<if test="describe != null and describe != ''"> and kl.`describe` like  CONCAT('%',#{describe},'%') </if>
+			<if test="content != null and content != ''"> and kl.content like  CONCAT('%',#{content},'%') </if>
+			<if test="gmtCreate != null and gmtCreate != ''"> and kl.gmt_create = #{gmtCreate} </if>
+			<if test="gmtModified != null and gmtModified != ''"> and kl.gmt_modified = #{gmtModified} </if>
+			<if test="platId != null and platId != ''"> and kl.plat_id = #{platId} </if>
+			<if test="sysId != null and sysId != ''"> and kl.sys_id = #{sysId} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by kl.kl_id desc 
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) FROM
+				knowledge kl
+			LEFT JOIN gas_system gs ON gs.sys_id = kl.sys_id
+			left join knowledge_class ks on ks.kl_class_id = kl.kl_class_id
+			LEFT JOIN platform p ON p.plat_id = kl.plat_id
+		<where>
+			<if test="klId != null and klId != ''"> and kl.kl_id = #{klId} </if>
+			<if test="klClassId != null and klClassId != ''"> and kl.kl_class_id = #{klClassId} </if>
+			<if test="klClass != null and klClass != ''"> and ks.kl_class_name like  CONCAT('%',#{klClass},'%') </if>
+			<if test="describe != null and describe != ''"> and kl.`describe` like  CONCAT('%',#{describe},'%') </if>
+			<if test="content != null and content != ''"> and kl.content like  CONCAT('%',#{content},'%') </if>
+			<if test="gmtCreate != null and gmtCreate != ''"> and kl.gmt_create = #{gmtCreate} </if>
+			<if test="gmtModified != null and gmtModified != ''"> and kl.gmt_modified = #{gmtModified} </if>
+			<if test="platId != null and platId != ''"> and kl.plat_id = #{platId} </if>
+			<if test="sysId != null and sysId != ''"> and kl.sys_id = #{sysId} </if>
+			<!-- validate -->
+			<if test="validateKlId != null and validateKlId != ''"> and kl.kl_id != #{validateKlId} </if>
+			<if test="validateDescribe != null and validateDescribe != ''"> and kl.`describe` = #{validateDescribe} </if>
+			
+		</where>
+	</select>
+</mapper>

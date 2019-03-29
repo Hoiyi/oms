@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hu.sysManagement.common.dao.KnowledgeClassDao">
+	
+	<select id="list" resultType="java.util.HashMap">
+		SELECT
+			kc.kl_class_id AS klClassId,
+			kc.kl_class_name AS klClassName,
+			kc.plat_id as platId,
+			p.plat_des as platDes,
+			kc.create_time AS createTime,
+			kc.creater AS creater,
+			u.`name` AS createrName,
+			kc.remark as remark
+		FROM
+			knowledge_class kc left join platform p on p.plat_Id = kc.plat_id left join sys_user u on u.user_id = kc.creater
+		<where>
+			<if test="klClassId != null and klClassId != ''"> and kc.kl_class_id = #{klClassId} </if>
+			<if test="klClassName != null and klClassName != ''"> and kc.kl_class_name like  CONCAT('%',#{klClassName},'%') </if>
+			<if test="creater != null and creater != ''"> and creater = #{creater} </if>
+			<if test="platId != null and platId != ''"> and kc.plat_id = #{platId} </if>
+			<!-- vilidate -->
+			<if test="validateKlClassId != null and validateKlClassId != ''"> and kc.kl_class_id != #{validateKlClassId} </if>
+			<if test="validateKlClassName != null and validateKlClassName != ''"> and kc.kl_class_name = #{validateKlClassName} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by kc.kl_class_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from knowledge_class kc left join platform p on p.plat_Id = kc.plat_id left join sys_user u on u.user_id = kc.creater
+		<where>
+			<if test="klClassId != null and klClassId != ''"> and kc.kl_class_id = #{klClassId} </if>
+			<if test="klClassName != null and klClassName != ''"> and kc.kl_class_name like  CONCAT('%',#{klClassName},'%') </if>
+			<if test="creater != null and creater != ''"> and creater = #{creater} </if>
+			<if test="platId != null and platId != ''"> and kc.plat_id = #{platId} </if>
+			<!-- vilidate -->
+			<if test="validateKlClassId != null and validateKlClassId != ''"> and kc.kl_class_id != #{validateKlClassId} </if>
+			<if test="validateKlClassName != null and validateKlClassName != ''"> and kc.kl_class_name = #{validateKlClassName} </if>
+		</where>
+	</select>
+</mapper>

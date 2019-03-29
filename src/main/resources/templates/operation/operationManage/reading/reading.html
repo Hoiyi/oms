@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content ">
+		<div id='panel-2' class="cpanel col-sm-7">
+			<div class="ibox ibox-body">
+				<div class="ibox-title">
+					<div class="pull-left">
+						<h5>点检列表</h5>
+					</div>
+					<div class="pull-right">
+						<i id='resizeBtn-2' class="btn fa fa-expand"
+							onclick="resize('panel-2','resizeBtn-2')"></i>
+					</div>
+				</div>
+				<div class="ibox-button">
+
+					<div class="col-sm-4 nopadding">
+						<select id="sysIdSearch" name="sysIdSearch" onchange="reLoad()"
+							class="form-control margin-right:'0px'">
+							<option value='' selected>系统类型</option>
+						</select>
+					</div>
+
+					<div class="columns pull-left">
+						<button class="btn btn-success" onclick="$.switcher()">
+							<i id="switch" class="fa fa-angle-down"></i>
+						</button>
+					</div>
+
+					<div class="columns pull-right">
+						<button shiro:hasPermission="operation:reading:add" type="button"
+							class="btn  btn-primary" onclick="add()">
+							<i class="fa fa-plus" aria-hidden="true"></i>添加
+						</button>
+						<button shiro:hasPermission="operation:reading:edit" type="button"
+							class="btn  btn-primary" onclick="edit()">
+							<i class="fa fa-edit" aria-hidden="true"></i>编辑
+						</button>
+<!-- 						<button shiro:hasPermission="operation:reading:remove"
+							type="button" class="btn  btn-danger" onclick="remove()">
+							<i class="fa fa-trash" aria-hidden="true"></i>删除
+						</button> -->
+					</div>
+
+				</div>
+				<div class="list-content pre-scrollable">
+					<div id="condition" style="display: none;">
+						<div class="form-group search-form">
+							<label class="col-sm-2 control-label">已选条件：</label>
+							<div class="col-sm-10">
+								<ul class="filter-header ui-choose choose-type-right">
+									<li style="display: none;" title="无条件" data-name="noCondition"
+										class="filter-item">无条件</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					<div id="search" style="display: none;">
+						<form class="form-horizontal" id="searchForm">
+							<div class="form-group search-form">
+								<label class="col-sm-2 control-label">调价状态：</label>
+								<div class="col-sm-4">
+									<select name="executeStateSearch" class="ui-choose"
+										multiple="multiple" id="executeStateSearch">
+										<option th:each="executeState:${executeState}"
+											th:value="${executeState.value}"
+											th:text="${executeState.name}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group search-form">
+								<label class="col-sm-2 control-label">点检人员：</label>
+								<div class="col-sm-4">
+									<select id="trainerSearch" name="trainerSearch"
+										onchange="reLoad()" class="form-control">
+										<option value='' selected>全部</option>
+									</select>
+								</div>
+
+								<label class="col-sm-2 control-label">抄表范围：</label>
+								<div class="col-sm-2" style="max-width: 130px">
+									<input type="text" class="form-control" id="startReadingValue"
+										oninput="inputChange(this)" onchange="compare()"
+										placeholder="抄表率始" onkeydown="keyDelete1(event)" />
+								</div>
+								<div class="columns pull-left"
+									style="margin-left: -10px; padding-top: 5px; margin-right: -10px;">
+									<span style="margin: 0 5px 0 5px">~</span>
+								</div>
+
+								<div class="col-sm-2 pull-left" style="max-width: 130px">
+									<input type="text" class="form-control" id="endReadingValue"
+										oninput="inputChange(this)" onchange="compare()"
+										placeholder="抄表率终" onkeydown="keyDelete2(event)" />
+								</div>
+
+							</div>
+
+							<div class="form-group search-form">
+								<label class="col-sm-2 control-label">开始时间：</label>
+								<div class="col-sm-4">
+									<input type="text" class="layer-date form-control"
+										id="startWriteTime" name="startWriteTime" placeholder="开始时间"
+										style="background-color: #fff;" readonly="readonly"
+										oninput="compareTime(this)" />
+								</div>
+								<label class="col-sm-2 control-label">结束时间：</label>
+								<div class="col-sm-4">
+									<input type="text" class=" layer-date form-control"
+										id="endWriteTime" name="endWriteTime" placeholder="结束时间"
+										style="background-color: #fff;" readonly="readonly"
+										oninput="compareTime(this)" />
+								</div>
+							</div>
+						</form>
+					</div>
+
+					<table id="exampleTable" data-mobile-responsive="true"></table>
+				</div>
+
+			</div>
+		</div>
+		<div id='panel-1' class="cpanel col-sm-5">
+			<form class="form-horizontal" id="signupForm">
+				<div class="ibox ibox-body">
+					<div class="ibox-title ">
+						<div class="pull-left">
+							<h5>详细信息</h5>
+						</div>
+						<div class="pull-right">
+							<i id='resizeBtn-1' class="btn fa fa-expand"
+								onclick="resize('panel-1','resizeBtn-1')"></i>
+						</div>
+					</div>
+					<div class="ibox-button">
+						<div class="pull-right">
+							<button id="giveupbtn" class="btn btn-danger hidden"
+								type="button">
+								<i class="fa fa fa-close" aria-hidden="true"></i> 放弃
+							</button>
+							<button id="savebtn" class="btn btn-primary hidden" type="submit">
+								<i class="fa fa-check-square-o" aria-hidden="true"></i> 保存
+							</button>
+						</div>
+					</div>
+					<div class="ibox-content pre-scrollable">
+						<input id="rId" name="rId" type="hidden"> <input id="opt"
+							name="opt" type="hidden">
+						<div class="form-group">
+							<label class="col-sm-3 control-label">点检人：</label>
+							<div class="col-sm-7">
+								<input id="userId" name="userId" type="hidden"> 
+								<input id="name" name="name" readonly="readonly" class="form-control"
+									type="text">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">系统类型：</label>
+							<div class="col-sm-7">
+								<select id="sysId" name="sysId" class="form-control">
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">用气量：</label>
+							<div class="col-sm-7">
+								<input id="dailyQuantity" name="dailyQuantity"
+									readonly="readonly" class="form-control" type="text"
+									oninput="dailyChange(this)">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label">抄表率：</label>
+							<div class="col-sm-7">
+								<input id="readingValue" name="readingValue" readonly="readonly"
+									class="form-control" type="text" oninput="valueChange(this)"
+									onkeydown="keyRemove(event)">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label">调价状态：</label>
+							<div class="col-sm-7">
+								<select id="executeState" name="executeState"
+									class="form-control">
+									<option value="1">成功</option>
+									<option value="0">失败</option>
+								</select>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-3 control-label">修改时间：</label>
+							<div class="col-sm-7">
+								<input id="updateTime" name="updateTime" readonly="readonly"
+									class="form-control" type="text"/>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label">备注：</label>
+							<div class="col-sm-7">
+								<textarea id="remarks" name="remarks" readonly="readonly"
+									class="form-control"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script type="text/javascript"
+		src="/js/appjs/operation/operationManage/reading/reading.js"></script>
+	<script type="text/javascript" src="/js/global.js"></script>
+	<script th:inline="javascript" type="text/javascript">
+		var userId = [[${user.userId}]];
+		var name = [[${user.name}]];
+	</script>
+</body>
+</html>

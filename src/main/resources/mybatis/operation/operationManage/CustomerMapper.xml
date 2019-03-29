@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hu.operation.operationManage.dao.CustomerDao">
+	<select id="AllCustomers" resultType="com.hu.operation.operationManage.domain.Customer">
+		select customer_manage.* from customer_manage
+	</select>
+	
+	<select id="customerSyslist" resultType="com.hu.operation.operationManage.domain.CustomerSys">
+		select customer_sys.* from customer_sys where customer_sys.is_deleted = 0
+	</select>
+	
+	<select id="list" resultType="java.util.HashMap">
+			SELECT
+				cs.cs_id AS csId,
+				cs.customer_id AS customerId,
+				cm.customer_name AS customerName,
+				cs.create_time AS createTime,
+				cm.customer_address_p AS customerAddressP,
+				cm.customer_address_c AS customerAddressC,
+				cm.contact AS contact,
+				cm.contact_information AS contactInformation,
+				cs.state AS state,
+				cs.update_reason AS disableReason,
+				cs.trainer AS trainer,
+				cs.trainer_time AS trainerTime,
+				cs.trainer_mode AS trainerMode,
+				cm.responsible_person AS responsiblePerson,
+				su.name AS responsiblePerson_Name,
+				cm.customer_property AS customerProperty,
+				gs.plat_id AS platId,
+				pf.plat_des AS platDes,
+				cs.sys_id AS sysId,
+				gs.sys_name AS sysName,
+				cs.sys_url AS sysUrl,
+				cs.remark AS remark
+			FROM
+				customer_sys cs
+			LEFT JOIN customer_manage cm ON cs.customer_id = cm.customer_id
+			LEFT JOIN gas_system gs ON cs.sys_id = gs.sys_id
+			LEFT JOIN platform pf ON cs.plat_id = pf.plat_id  
+			LEFT JOIN sys_user su ON su.user_id = cm.responsible_person
+			
+		<where>
+			cs.is_deleted = 0 
+			<if test="customerId != null and customerId != ''"> and cs.customer_id = #{cId} </if>
+			<if test="customerName != null and customerName != ''"> and cm.customer_name like  CONCAT('%',#{customerName},'%') </if>
+			<if test="creatTime != null and creatTime != ''"> and cs.create_time = #{creatTime} </if>
+			<if test="customerAddressP != null and customerAddressP != ''"> and cm.customer_address_p = #{customerAddressP} </if>
+			<if test="customerAddressC != null and customerAddressC != ''"> and cm.customer_address_c = #{customerAddressC} </if>
+			<if test="contact != null and contact != ''"> and cm.contact = #{contact} </if>
+			<if test="contactInformation != null and contactInformation != ''"> and cm.contact_information = #{contactInformation} </if>
+			<if test="state != null and state != ''"> and cs.state = #{state} </if>
+			<if test="disableReason != null and disableReason != ''"> and cs.update_reason = #{updateReason} </if>
+			<if test="trainer != null and trainer != ''"> and cs.trainer = #{trainer} </if>
+			<if test="trainerTime != null and trainerTime != ''"> and cs.trainer_time = #{trainerTime} </if>
+			<if test="trainerMode != null and trainerMode != ''"> and cs.trainer_mode = #{trainerMode} </if>
+			<if test="responsiblePerson != null and responsiblePerson != ''"> and cm.responsible_person = #{responsiblePerson} </if>
+			<if test="customerProperty != null and customerProperty != ''"> and cm.customer_property = #{customerProperty} </if>
+			<if test="platId != null and platId != ''"> and gs.plat_id = #{platId} </if>
+			<if test="platDes != null and platDes != ''"> and pf.plat_des = #{platDes} </if>
+			<if test="sysId != null and sysId != ''"> and cs.sys_id = #{sysId} </if>
+			<if test="sysName != null and sysName != ''"> and gs.sys_name = #{sysName} </if>
+			<if test="sysUrl != null and sysUrl != ''"> and cs.sys_url = #{sysUrl} </if>
+			<if test="remark != null and remark != ''"> and cs.remark = #{remark} </if>
+		</where>
+			order by cs.create_time desc
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	<select id="count" resultType="int">
+		select count(*) from customer_sys cs
+			LEFT JOIN customer_manage cm ON cs.customer_id = cm.customer_id
+			LEFT JOIN gas_system gs ON cs.sys_id = gs.sys_id
+			LEFT JOIN platform pf ON cs.plat_id = pf.plat_id  
+			LEFT JOIN sys_user su ON su.user_id = cm.responsible_person			
+		<where>
+			is_deleted = 0 
+			<if test="customerId != null and customerId != ''"> and cs.customer_id = #{customerId} </if>
+			<if test="customerName != null and customerName != ''"> and cm.customer_name like  CONCAT('%',#{customerName},'%') </if>
+			<if test="creatTime != null and creatTime != ''"> and cs.create_time = #{creatTime} </if>
+			<if test="customerAddressP != null and customerAddressP != ''"> and cm.customer_address_p = #{customerAddressP} </if>
+			<if test="customerAddressC != null and customerAddressC != ''"> and cm.customer_address_c = #{customerAddressC} </if>
+			<if test="contact != null and contact != ''"> and cm.contact = #{contact} </if>
+			<if test="contactInformation != null and contactInformation != ''"> and cm.contact_information = #{contactInformation} </if>
+			<if test="state != null and state != ''"> and cs.state = #{state} </if>
+			<if test="disableReason != null and disableReason != ''"> and cs.update_reason = #{updateReason} </if>
+			<if test="trainer != null and trainer != ''"> and cs.trainer = #{trainer} </if>
+			<if test="trainerTime != null and trainerTime != ''"> and cs.trainer_time = #{trainerTime} </if>
+			<if test="trainerMode != null and trainerMode != ''"> and cs.trainer_mode = #{trainerMode} </if>
+			<if test="responsiblePerson != null and responsiblePerson != ''"> and cm.responsible_person = #{responsiblePerson} </if>
+			<if test="customerProperty != null and customerProperty != ''"> and cm.customer_property = #{customerProperty} </if>
+			<if test="platId != null and platId != ''"> and gs.plat_id = #{platId} </if>
+			<if test="platDes != null and platDes != ''"> and pf.plat_des = #{platDes} </if>
+			<if test="sysId != null and sysId != ''"> and cs.sys_id = #{sysId} </if>
+			<if test="sysName != null and sysName != ''"> and gs.sys_name = #{sysName} </if>
+			<if test="sysUrl != null and sysUrl != ''"> and cs.sys_url = #{sysUrl} </if>
+			<if test="remark != null and remark != ''"> and cs.remark = #{remark} </if>
+		</where>
+	</select>
+	<update id="updateDel" parameterType="java.lang.Integer">
+		update customer_sys set is_deleted = 1 where cs_id = #{csId}
+	</update>
+	
+	<select id="find" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select d.principal_id from district d where d.prefecture like CONCAT('%',#{customerAddressP},'%')
+	</select>
+	
+	<insert id="save" parameterType="com.hu.operation.operationManage.domain.Customer" keyProperty="customerId" useGeneratedKeys="true">
+		INSERT INTO customer_manage 
+	  ( customer_name,
+		create_time,
+		customer_address_p,
+		customer_address_c,
+		contact,
+		contact_information,
+		responsible_person,
+		customer_property
+		)  VALUES 
+	  ( #{customerName},
+		#{createTime},
+		#{customerAddressP},
+		#{customerAddressC},
+		#{contact},
+		#{contactInformation},
+		#{responsiblePerson},
+		#{customerProperty}
+		 )
+	</insert>
+	
+	<update id="updateC" parameterType="com.hu.operation.operationManage.domain.Customer">
+		update customer_manage set
+			customer_name = #{customerName},
+			customer_address_p = #{customerAddressP},
+			customer_address_c = #{customerAddressC},
+			contact = #{contact},
+			contact_information = #{contactInformation},
+			responsible_person = #{responsiblePerson},
+			customer_property = #{customerProperty} 	
+		where			
+			customer_id = #{customerId}				
+	</update>
+	
+	<update id="updateCS" parameterType="com.hu.operation.operationManage.domain.CustomerSys">
+		update customer_sys set
+			plat_id = #{platId},
+			sys_id = #{sysId},
+			trainer = #{trainer},
+			trainer_mode = #{trainerMode},
+			trainer_time = #{trainerTime},
+			sys_url = #{sysUrl},
+			remark = #{remark},
+			state = #{state},
+			update_reason = #{updateReason}
+		where 
+			cs_id = #{csId}
+	</update>
+	
+	<insert id="saveCS" parameterType="com.hu.operation.operationManage.domain.CustomerSys" keyProperty="csId" useGeneratedKeys="true">
+		INSERT INTO customer_sys
+	  ( customer_id,
+		plat_id,
+		sys_id,
+		create_time,
+		trainer,
+		trainer_time,
+		trainer_mode,
+		sys_url,
+		remark,
+		is_deleted,
+		state,
+		create_person,
+		update_reason
+		)  VALUES 
+	  ( #{customerId},
+		#{platId},
+		#{sysId},
+		#{createTime},
+		#{trainer},
+		#{trainerTime},
+		#{trainerMode},
+		#{sysUrl},
+		#{remark},
+		#{isDeleted},
+		#{state},
+		#{createPerson},
+		#{updateReason}
+		 )
+	</insert>
+</mapper>
+
+
+
+
