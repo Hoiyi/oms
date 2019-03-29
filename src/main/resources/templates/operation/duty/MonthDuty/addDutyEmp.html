@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
-	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
-<meta charset="utf-8">
-<head th:include="include :: header">
-<title> new document </title>
-<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-<meta name="author" content="" />
-<meta name="keywords" content="" />
-<meta name="description" content="" />
-<link rel="stylesheet" type="text/css" href="" />
-<link rel="stylesheet" type="text/css" href=/css/appStyle/operation/duty/MonthDuty/addDutyEmp.css">
-<script type="text/javascript"></script>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+	<meta charset="utf-8">
 
-<script type="text/javascript" src="/js/jquery.min.js"></script>
-<script type="text/javascript" src="/js/appjs/operation/duty/MonthDuty/smartCycle.min.js"></script>
-<META NAME="Description" CONTENT="Power by hill"> 
+	<head th:include="include :: header">
+		<title> new document </title>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+		<meta name="author" content="" />
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<link rel="stylesheet" type="text/css" href="" />
+		<link rel="stylesheet" type="text/css" href=/css/appStyle/operation/duty/MonthDuty/addDutyEmp.css ">
+<script type="text/javascript "></script>
+
+<script type="text/javascript " src="/js/jquery.min.js "></script>
+<script type="text/javascript " src="/js/appjs/operation/duty/MonthDuty/smartCycle.min.js "></script>
+<META NAME="Description " CONTENT="Power by hill "> 
 </head>
 <body>
-<style type="text/css">
+<style type="text/css ">
 	table{
 		border:0;
 		width:500px; 
@@ -35,61 +35,61 @@
 		width:200px;
 	}
 </style>
-<form method="post" name="myform"> 
-<table align="center"> 
-	<tr><td colspan="4">&nbsp;</td></tr>
+<form method="post " name="myform "> 
+<table align="center "> 
+	<tr><td colspan="4 ">&nbsp;</td></tr>
 	<tr> 
-		<td class="tdwidth"> 
-			<select class="selectwidth"  multiple name="list1" size="12" ondblclick="moveOption(document.myform.list1, document.myform.list2)"> 
-			<option th:each="list:${userList}"   th:value="${list}" th:text="${list}"></option>
+		<td class="tdwidth "> 
+			<select class="selectwidth "  multiple name="list1 " size="12 " ondblclick="moveOption(document.myform.list1, document.myform.list2) "> 
+			<option th:each="list:${userList} "   th:value="${list} " th:text="${list} "></option>
 			</select> 
 		</td>  
 		
 		 <td>	&nbsp;	&nbsp;</td><td>	&nbsp;	&nbsp;</td>
-		<td class="tdwidth2"> 
-			<input type="button" class="btn  btn-primary" value="添加→" onclick="moveOption(document.myform.list1, document.myform.list2)">
+		<td class="tdwidth2 "> 
+			<input type="button " class="btn btn-primary " value="添加→ " onclick="moveOption(document.myform.list1, document.myform.list2) ">
 			<br/> 
 			<br/> 
-			<input type="button" class="btn  btn-primary" value="←删除" onclick="moveOption(document.myform.list2, document.myform.list1)"> 
+			<input type="button " class="btn btn-primary " value="←删除 " onclick="moveOption(document.myform.list2, document.myform.list1) "> 
 		</td> 
 		<td>	&nbsp;	&nbsp;</td>
-		<td class="tdwidth"> 
-			<select class="selectwidth" id="emplist" multiple name="list2" size="12" ondblclick="moveOption(document.myform.list2, document.myform.list1)">
-			<option th:each="list : ${dutyList}"> <span  th:text="${list}"></span> </option>
+		<td class="tdwidth "> 
+			<select class="selectwidth " id="emplist " multiple name="list2 " size="12 " ondblclick="moveOption(document.myform.list2, document.myform.list1) ">
+			<option th:each="list : ${dutyList} "> <span  th:text="${list} "></span> </option>
 			</select> 
 		</td> 
 		<td>	&nbsp;	&nbsp;</td><td>	&nbsp;	&nbsp;</td>
 		<td> 
-			<button class="btn  btn-primary" onclick="changepos(list2,-1)" type="button">上移↑</button> 
+			<button class="btn btn-primary " onclick="changepos(list2,-1) " type="button ">上移↑</button> 
 			<br/> 
 			<br/> 
-			<button class="btn  btn-primary" onclick="changepos(list2,1)" type="button">下移↓</button> 
+			<button class="btn btn-primary " onclick="changepos(list2,1) " type="button ">下移↓</button> 
 		</td>  
 	</tr> 
-	<tr><td colspan="4">&nbsp;</td></tr>
-	<tr align="center"><td colspan="8"><button class="btn  btn-primary btnwidth" onclick="saveEmpList()" type="button">确定</button></td></tr>
+	<tr><td colspan="4 ">&nbsp;</td></tr>
+	<tr align="center "><td colspan="8 "><button class="btn btn-primary btnwidth " onclick="saveEmpList() " type="button ">确定</button></td></tr>
 	
 </table> 
 
 </form> 
 
-<div th:include="include :: footer"></div>
+<div th:include="include :: footer "></div>
 
-<script language="JavaScript"> 
+<script language="JavaScript "> 
  
 function saveEmpList(){
 		
-	obj = document.getElementById("emplist");
+	obj = document.getElementById("emplist ");
  	//`alert(obj);
  	//alert(obj.length);
  	if(obj.length==0){
-		layer.msg("不能清空值班人员");
+		layer.msg("不能清空值班人员 ");
 		return;
 	}  
 	
 	var str='';
 	for(i=0;i<obj.length;i++){
-	    str = str+obj[i].text+",";
+	    str = str+obj[i].text+", ";
 	}
 	//str = '';
 //	console.log(str)
@@ -105,7 +105,7 @@ function saveEmpList(){
 				//console.log(data);
 			},
 			error:function(e){
-				console.log("发送失败");
+				console.log("发送失败 ");
 	    	}
 		});  
 		//sleep(1000);
@@ -130,9 +130,9 @@ function moveOption(e1, e2){
 } 
 
 function getvalue(geto){ 
-var allvalue = ""; 
+var allvalue = " "; 
 for(var i=0;i<geto.options.length;i++){ 
-allvalue +=geto.options[i].value + ","; 
+allvalue +=geto.options[i].value + ", "; 
 } 
 return allvalue; 
 } 

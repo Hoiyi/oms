@@ -1,79 +1,78 @@
 <!DOCTYPE html>
-<html>
-<meta charset="utf-8">
-<head th:include="include :: header"></head>
-<body class="gray-bg">
-	<div class="wrapper wrapper-content ">
-		<div id='panel-1' class="cpanel col-sm-7">
-			<div class="ibox">
-				<div class="ibox-body">
-					<div class="ibox-title">
-					
-								<div class="pull-left">
-									<h5>字典列表</h5>
-								</div>
-								<div  class="pull-right" >
-									<i id='resizeBtn-1' class="btn fa fa-expand" onclick="resize('panel-1','resizeBtn-1')"></i>
-								</div>
-					</div>
-					<div class="ibox-button">
-						<div class="columns pull-left">
-							<button shiro:hasPermission="common:dict:add" type="button"
-								class="btn  btn-primary" onclick="add()">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+	<meta charset="utf-8">
+
+	<head th:include="include :: header"></head>
+
+	<body class="gray-bg">
+		<div class="wrapper wrapper-content ">
+			<div id='panel-1' class="cpanel col-sm-7">
+				<div class="ibox">
+					<div class="ibox-body">
+						<div class="ibox-title">
+
+							<div class="pull-left">
+								<h5>字典列表</h5>
+							</div>
+							<div class="pull-right">
+								<i id='resizeBtn-1' class="btn fa fa-expand" onclick="resize('panel-1','resizeBtn-1')"></i>
+							</div>
+						</div>
+						<div class="ibox-button">
+							<div class="columns pull-left">
+								<button shiro:hasPermission="common:dict:add" type="button" class="btn  btn-primary" onclick="add()">
 								<i class="fa fa-plus" aria-hidden="true"></i>添加
 							</button>
-							<button shiro:hasPermission="common:dict:edit" type="button"
-								class="btn  btn-primary" onclick="edit()">
+								<button shiro:hasPermission="common:dict:edit" type="button" class="btn  btn-primary" onclick="edit()">
 								<i class="fa fa-edit" aria-hidden="true"></i>编辑
 							</button>
-							<button shiro:hasPermission="common:dict:remove"
-								type="button" class="btn  btn-danger" onclick="remove()">
+								<button shiro:hasPermission="common:dict:remove" type="button" class="btn  btn-danger" onclick="remove()">
 								<i class="fa fa-trash" aria-hidden="true"></i>删除
 							</button>
+							</div>
+							<div class="hidden columns pull-right">
+								<button class="btn btn-success" onclick="reLoad()">查询</button>
+							</div>
+							<div class="columns pull-right nopadding">
+								<select data-placeholder="选择类别" class="form-control chosen-select" tabindex="2">
+									<option value="">选择类别</option>
+								</select>
+							</div>
 						</div>
-						<div class="hidden columns pull-right">
-							<button class="btn btn-success" onclick="reLoad()">查询</button>
+						<div class='list-content pre-scrollable'>
+							<table id="exampleTable" data-mobile-responsive="true"> </table>
 						</div>
-						<div class="columns pull-right nopadding">
-							<select data-placeholder="选择类别" class="form-control chosen-select" tabindex="2" >
-								<option value="">选择类别</option>
-							</select>
-						</div>
-					</div>
-					<div class='list-content pre-scrollable'>
-						<table id="exampleTable" data-mobile-responsive="true"> </table>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div id='panel-2' class="cpanel col-sm-5 " >
-			<form class="form-horizontal" id="signupForm">
+			<div id='panel-2' class="cpanel col-sm-5 ">
+				<form class="form-horizontal" id="signupForm">
 					<div class="ibox ibox-body">
 						<div class="ibox-title ">
-								<div class="pull-left">
-									<h5>详细信息</h5>
-								</div>
-								<div  class="pull-right" >
-									<i id='resizeBtn-2' class="btn fa fa-expand" onclick="resize('panel-2','resizeBtn-2')"></i>
-								</div>
+							<div class="pull-left">
+								<h5>详细信息</h5>
+							</div>
+							<div class="pull-right">
+								<i id='resizeBtn-2' class="btn fa fa-expand" onclick="resize('panel-2','resizeBtn-2')"></i>
+							</div>
 						</div>
 						<div class="ibox-button">
-								<div class="pull-right">
-									<button id="cancelbtn" onclick="cancel()"  class="btn btn-danger hidden"  type="button"> 
+							<div class="pull-right">
+								<button id="cancelbtn" onclick="cancel()" class="btn btn-danger hidden" type="button"> 
 								 		<i class="fa fa fa-close" aria-hidden="true"></i> 放弃 
-								   </button> 
-								 	<button id="savebtn"  class="btn btn-primary hidden"  type="submit"> 
+								   </button>
+								<button id="savebtn" class="btn btn-primary hidden" type="submit"> 
 								 		<i class="fa fa-check-square-o" aria-hidden="true"></i> 保存 
-								   </button> 
-								</div>
+								   </button>
+							</div>
 						</div>
 						<div class="ibox-content pre-scrollable">
-							<input id="id" name="id" type="hidden" > 
-							<input id="opt" name="opt" type="hidden" > 
+							<input id="id" name="id" type="hidden">
+							<input id="opt" name="opt" type="hidden">
 							<div class="form-group">
 								<label class="col-sm-3 control-label"><em class="gg-star">*</em>标签名：</label>
 								<div class="col-sm-8">
-									<input id="name" placeholder="标签名"  name="name" class="form-control" type="text">
+									<input id="name" placeholder="标签名" name="name" class="form-control" type="text">
 								</div>
 							</div>
 							<div class="form-group">
@@ -91,38 +90,36 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label"><em class="gg-star">*</em>描述：</label>
 								<div class="col-sm-8">
-									<input id="description" placeholder="描述" name="description" th:value="${description}" class="form-control"
-										type="text">
+									<input id="description" placeholder="描述" name="description" th:value="${description}" class="form-control" type="text">
 								</div>
 							</div>
-							
 
 							<div class="form-group">
 								<label class="col-sm-3 control-label">备注信息：</label>
 								<div class="col-sm-8">
-									<input id="remarks" placeholder="备注信息" name="remarks" class="form-control"
-										type="text">
+									<input id="remarks" placeholder="备注信息" name="remarks" class="form-control" type="text">
 								</div>
 							</div>
-							
+
 						</div>
 					</div>
 				</form>
+			</div>
 		</div>
-	</div>
 
-	<script type="text/javascript">
-		var s_add_h = 'hidden';
-	</script>
-	<div shiro:hasPermission="common:dict:add">
 		<script type="text/javascript">
-			s_add_h = '';
+			var s_add_h = 'hidden';
 		</script>
-	</div>
+		<div shiro:hasPermission="common:dict:add">
+			<script type="text/javascript">
+				s_add_h = '';
+			</script>
+		</div>
 
-	</div>
-	<div th:include="include :: footer"></div>
-	<script type="text/javascript" th:src="@{/js/appjs/sysManagement/common/dict/dict.js}"></script>
-	<script type="text/javascript" th:src="@{/js/global.js}"></script>
-</body>
+		</div>
+		<div th:include="include :: footer"></div>
+		<script type="text/javascript" th:src="@{/js/appjs/sysManagement/common/dict/dict.js}"></script>
+		<script type="text/javascript" th:src="@{/js/global.js}"></script>
+	</body>
+
 </html>

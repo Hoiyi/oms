@@ -1,120 +1,118 @@
 <!DOCTYPE html>
 <html lang="zh_CN" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
-<meta charset="utf-8">
-<head th:include="include :: header"></head>
-<body class="gray-bg">
-	<div class="wrapper wrapper-content ">
+	<meta charset="utf-8">
+
+	<head th:include="include :: header"></head>
+
+	<body class="gray-bg">
+		<div class="wrapper wrapper-content ">
 			<div id='panel-2' class="cpanel col-sm-7">
-					<div class="ibox ibox-body">
-						<div class="ibox-title">
-									<div class="pull-left">
-										<h5>用户列表</h5>
-									</div>
-									<div  class="pull-right" >
-									<i id='resizeBtn-2' class="btn fa fa-expand" onclick="resize('panel-2','resizeBtn-2')"></i>
-								</div>
+				<div class="ibox ibox-body">
+					<div class="ibox-title">
+						<div class="pull-left">
+							<h5>用户列表</h5>
 						</div>
-						<div class="ibox-button">
-						
-							<div class="columns pull-left col-md-4 nopadding">
-								<input id="condition-name" name="condition-name" type="text" class="form-control  onblurSearch"
-									placeholder="姓名">
-							</div>
-							<div class="columns pull-left">
-								<button class="btn btn-success" onclick="$.switcher()">
+						<div class="pull-right">
+							<i id='resizeBtn-2' class="btn fa fa-expand" onclick="resize('panel-2','resizeBtn-2')"></i>
+						</div>
+					</div>
+					<div class="ibox-button">
+
+						<div class="columns pull-left col-md-4 nopadding">
+							<input id="condition-name" name="condition-name" type="text" class="form-control  onblurSearch" placeholder="姓名">
+						</div>
+						<div class="columns pull-left">
+							<button class="btn btn-success" onclick="$.switcher()">
 									<i id="switch" class="fa fa-angle-down"></i>
 								</button>
-							</div>
+						</div>
 
-							<div class="columns pull-right">
-								<button shiro:hasPermission="sys:user:add" type="button"
-									class="btn  btn-primary" onclick="add()">
+						<div class="columns pull-right">
+							<button shiro:hasPermission="sys:user:add" type="button" class="btn  btn-primary" onclick="add()">
 									<i class="fa fa-plus" aria-hidden="true"></i>添加
 								</button>
-								<button shiro:hasPermission="sys:user:edit" type="button"
-								class="btn  btn-primary" onclick="edit()">
+							<button shiro:hasPermission="sys:user:edit" type="button" class="btn  btn-primary" onclick="edit()">
 								<i class="fa fa-edit" aria-hidden="true"></i>编辑
 								</button>
-								<button shiro:hasPermission="sys:user:remove" type="button"
-									class="btn  btn-danger" onclick="remove()">
+							<button shiro:hasPermission="sys:user:remove" type="button" class="btn  btn-danger" onclick="remove()">
 									<i class="fa fa-trash" aria-hidden="true"></i>删除
 								</button>
-							</div>
-							
 						</div>
-						<div class="list-content pre-scrollable">
-							<div id="condition" style="display: none;">
-								<div class="form-group search-form">
-										<label class="col-sm-2 control-label">已选条件：</label>
-										<div class="col-sm-10">
-											<ul class="filter-header ui-choose choose-type-right">
-												<li style="display: none;" title="无条件" data-name="noCondition"  class="filter-item">无条件</li>
-											</ul>
-										</div>
+
+					</div>
+					<div class="list-content pre-scrollable">
+						<div id="condition" style="display: none;">
+							<div class="form-group search-form">
+								<label class="col-sm-2 control-label">已选条件：</label>
+								<div class="col-sm-10">
+									<ul class="filter-header ui-choose choose-type-right">
+										<li style="display: none;" title="无条件" data-name="noCondition" class="filter-item">无条件</li>
+									</ul>
 								</div>
 							</div>
-							
-							<div id="search" style="display: none;">
-								<form  class="form-horizontal" id="searchForm">
-									 <div class="form-group search-form">
-										<label class="col-sm-2 control-label">用户名：</label>
-										<div class="col-sm-4">
-											<input id="condition-username" name="condition-username" placeholder="用户名" class="form-control  onblurSearch" type="text">
-										</div>
-									</div>
-									 <div class="form-group search-form">
-										<label class="col-sm-2 control-label">邮箱：</label>
-										<div class="col-sm-4">
-											<input id="condition-email" name="condition-email" placeholder="邮箱"   class="form-control  onblurSearch" type="text">
-										</div>
-									</div>
-									<div class="form-group search-form">
-										<label class="col-sm-2 control-label">性别：</label>
-										<div class="col-sm-4">
-											<select name='condition-sex' class="ui-choose" multiple="multiple" id="condition-sex">
-                                        		<option th:each="sex:${sexList}"   th:value="${sex.value}" th:text="${sex.name}"></option>
-									        </select>
-										</div>
-									</div>
-									<div class="form-group search-form">
-										<label class="col-sm-2 control-label">状态：</label>
-										<div class="col-sm-4">
-											<select name="condition-status"  class="ui-choose" multiple="multiple" id="condition-status">
-                                        			<option th:each="status:${userStatus}" th:value="${status.value}" th:text="${status.name}"></option>
-									        </select>
-										</div>
-									</div>
-								</form>
-							</div>
-							
-							<table id="exampleTable" data-mobile-responsive="true"></table>
 						</div>
-						
+
+						<div id="search" style="display: none;">
+							<form class="form-horizontal" id="searchForm">
+								<div class="form-group search-form">
+									<label class="col-sm-2 control-label">用户名：</label>
+									<div class="col-sm-4">
+										<input id="condition-username" name="condition-username" placeholder="用户名" class="form-control  onblurSearch" type="text">
+									</div>
+								</div>
+								<div class="form-group search-form">
+									<label class="col-sm-2 control-label">邮箱：</label>
+									<div class="col-sm-4">
+										<input id="condition-email" name="condition-email" placeholder="邮箱" class="form-control  onblurSearch" type="text">
+									</div>
+								</div>
+								<div class="form-group search-form">
+									<label class="col-sm-2 control-label">性别：</label>
+									<div class="col-sm-4">
+										<select name='condition-sex' class="ui-choose" multiple="multiple" id="condition-sex">
+											<option th:each="sex:${sexList}" th:value="${sex.value}" th:text="${sex.name}"></option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group search-form">
+									<label class="col-sm-2 control-label">状态：</label>
+									<div class="col-sm-4">
+										<select name="condition-status" class="ui-choose" multiple="multiple" id="condition-status">
+											<option th:each="status:${userStatus}" th:value="${status.value}" th:text="${status.name}"></option>
+										</select>
+									</div>
+								</div>
+							</form>
+						</div>
+
+						<table id="exampleTable" data-mobile-responsive="true"></table>
 					</div>
+
+				</div>
 			</div>
-			<div id='panel-1' class="cpanel col-sm-5" >
+			<div id='panel-1' class="cpanel col-sm-5">
 				<form class="form-horizontal" id="signupForm">
 					<div class="ibox ibox-body">
 						<div class="ibox-title ">
-								<div class="pull-left">
-									<h5>详细信息</h5>
-								</div>
-								<div  class="pull-right" >
-									<i id='resizeBtn-1' class="btn fa fa-expand" onclick="resize('panel-1','resizeBtn-1')"></i>
-								</div>
+							<div class="pull-left">
+								<h5>详细信息</h5>
+							</div>
+							<div class="pull-right">
+								<i id='resizeBtn-1' class="btn fa fa-expand" onclick="resize('panel-1','resizeBtn-1')"></i>
+							</div>
 						</div>
 						<div class="ibox-button">
 							<div class="pull-right">
-								 	<button id="cancelbtn" onclick="cancel()"  class="btn btn-danger hidden"  type="button"> 
+								<button id="cancelbtn" onclick="cancel()" class="btn btn-danger hidden" type="button"> 
 								 		<i class="fa fa fa-close" aria-hidden="true"></i> 放弃 
-								   </button> 
-								 	<button id="savebtn"  class="btn btn-primary hidden"  type="submit"> 
+								   </button>
+								<button id="savebtn" class="btn btn-primary hidden" type="submit"> 
 								 		<i class="fa fa-check-square-o" aria-hidden="true"></i> 保存 
-								   </button> 
-								</div>
+								   </button>
+							</div>
 						</div>
 						<div class="ibox-content pre-scrollable">
-							<input id="opt" name="opt" type="hidden" > 
+							<input id="opt" name="opt" type="hidden">
 							<input id="userId" name="userId" type="hidden">
 							<div class="form-group">
 								<label class="col-sm-3 control-label"><em class="gg-star">*</em>姓名：</label>
@@ -125,77 +123,73 @@
 							<div class="form-group">
 								<label class="col-sm-3 control-label"><em class="gg-star">*</em>用户名：</label>
 								<div class="col-sm-8">
-									<input id="username" placeholder="用户名" name="username" class="form-control"
-										type="text">
+									<input id="username" placeholder="用户名" name="username" class="form-control" type="text">
 								</div>
 							</div>
-							
+
 							<div class="form-group">
 								<label class="col-sm-3 control-label"><em class="gg-star">*</em>部门：</label>
 								<div class="col-sm-8">
 									<input id="deptId" name="deptId" class="hidden">
-									<input id="deptName" name="deptName" class="form-control" type="text"
-										style="cursor: pointer;" disabled="disabled" onclick="openDept()" readonly="readonly" placeholder="所属部门">
+									<input id="deptName" name="deptName" class="form-control" type="text" style="cursor: pointer;" disabled="disabled" onclick="openDept()" readonly="readonly" placeholder="所属部门">
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label">数据权限：</label>
 								<div class="col-sm-8">
-									 <input id="dataPerms" name="dataPerms" class="hidden">
-									<textarea  id="dataPermsName" name="dataPermsName" class="form-control" 
-									style="cursor: pointer;" onclick="openPerms()" readonly="readonly" placeholder="数据权限"></textarea>
+									<input id="dataPerms" name="dataPerms" class="hidden">
+									<textarea id="dataPermsName" name="dataPermsName" class="form-control" style="cursor: pointer;" onclick="openPerms()" readonly="readonly" placeholder="数据权限"></textarea>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label"><em class="gg-star">*</em>E-mail：</label>
 								<div class="col-sm-8">
-									<input id="email"  placeholder="E-mail" name="email" class="form-control"
-										type="email">
+									<input id="email" placeholder="E-mail" name="email" class="form-control" type="email">
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-sm-3 control-label"><em class="gg-star">*</em>状态：</label>
 								<div class="col-sm-8">
 									<input id="status" name="status" class="hidden">
-									<select name="status-select"  class="ui-choose"  id="status-select">
-                                        <option th:each="status:${userStatus}" th:value="${status.value}" th:text="${status.name}"></option>
+									<select name="status-select" class="ui-choose" id="status-select">
+										<option th:each="status:${userStatus}" th:value="${status.value}" th:text="${status.name}"></option>
 									</select>
 								</div>
 							</div>
-							
+
 							<div class="form-group">
 								<label class="col-sm-3 control-label">角色：</label>
 								<div class="col-sm-8">
-									 <input type="hidden" name="roleIds" id="roleIds">
-									 <!-- <input id="role" name="role" class="hidden"> -->
-									 <select name='role-select' class="ui-choose" multiple="multiple" id="role-select">
-                                        <option th:each="role:${roles}"   th:value="${role.roleId}" th:text="${role.roleName}"></option>
-									</select> 
+									<input type="hidden" name="roleIds" id="roleIds">
+									<!-- <input id="role" name="role" class="hidden"> -->
+									<select name='role-select' class="ui-choose" multiple="multiple" id="role-select">
+										<option th:each="role:${roles}" th:value="${role.roleId}" th:text="${role.roleName}"></option>
+									</select>
 								</div>
 							</div>
 						</div>
 					</div>
 				</form>
 			</div>
-		<div>
-			<script type="text/javascript">
+			<div>
+				<script type="text/javascript">
+					var s_resetPwd_h = 'hidden';
+				</script>
+			</div>
+			<div shiro:hasPermission="sys:user:resetPwd">
+				<script type="text/javascript">
+					s_resetPwd_h = '';
+				</script>
+			</div>
+		</div>
+		<script th:inline="javascript" type="text/javascript">
+			var suffix = [[${suffix}]];
+			var generateMode = [[${generateMode}]];
+		</script>
+		<div th:include="include :: footer"></div>
+		<script type="text/javascript" th:src="@{/js/global.js}"></script>
+		<script type="text/javascript" th:src="@{/js/appjs/sysManagement/sys/user/user.js}"></script>
 
-				var s_resetPwd_h = 'hidden';
-			</script>
-		</div>
-		<div shiro:hasPermission="sys:user:resetPwd">
-			<script type="text/javascript">
-				s_resetPwd_h = '';
-			</script>
-		</div>
-	</div>
-	<script th:inline="javascript" type="text/javascript">
-		var suffix = [[${suffix}]];
-		var generateMode = [[${generateMode}]];
-	</script>
-	<div th:include="include :: footer"></div>
-	<script type="text/javascript" th:src="@{/js/global.js}"></script>
-	<script type="text/javascript" th:src="@{/js/appjs/sysManagement/sys/user/user.js}"></script>
-	
-</body>
+	</body>
+
 </html>

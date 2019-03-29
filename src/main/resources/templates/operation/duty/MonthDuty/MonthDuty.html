@@ -1,44 +1,45 @@
 <!doctype html>
 <html lang="zh_CN" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
-<head >
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>jQuery可生成循环流程图表特效</title>
-<link rel="stylesheet" type="text/css" href=/css/appStyle/operation/duty/MonthDuty/default.css">
-<link href="/css/appStyle/operation/duty/MonthDuty/style.css" rel="stylesheet">
-	<link href="css/bootstrap.min.css?v=3.3.6"
-		  th:href="@{/css/bootstrap.min.css?v=3.3.6}" rel="stylesheet">
-<link href="/css/style.css?v=4.1.0" th:href="@{/css/style.css?v=4.1.0}"
-		  rel="stylesheet">
-	<link href="/css/font-awesome.css?v=4.4.0"
-		  th:href="@{/css/font-awesome.css?v=4.4.0}" rel="stylesheet">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>jQuery可生成循环流程图表特效</title>
+		<link rel="stylesheet" type="text/css" href=/css/appStyle/operation/duty/MonthDuty/default.css ">
+<link href="/css/appStyle/operation/duty/MonthDuty/style.css " rel="stylesheet ">
+	<link href="css/bootstrap.min.css?v=3.3.6 "
+		  th:href="@{/css/bootstrap.min.css?v=3.3.6} " rel="stylesheet ">
+<link href="/css/style.css?v=4.1.0 " th:href="@{/css/style.css?v=4.1.0} "
+		  rel="stylesheet ">
+	<link href="/css/font-awesome.css?v=4.4.0 "
+		  th:href="@{/css/font-awesome.css?v=4.4.0} " rel="stylesheet ">
 		  
 </head>
 <body>
-     <button shiro:hasPermission="duty:month:register" type="button"  class="btn btn-primary" onclick="add()"><i class="fa fa-gear" aria-hidden="true"></i>设置值班人员</button>
-      <button shiro:hasPermission="duty:month:register" type="button"  class="btn btn-primary" onclick="set()"><i class="fa fa-gear" aria-hidden="true"></i>设置当前值班</button>  
-<div class="contenedor">
-	<div class="ciclo1">
+     <button shiro:hasPermission="duty:month:register " type="button "  class="btn btn-primary " onclick="add() "><i class="fa fa-gear " aria-hidden="true "></i>设置值班人员</button>
+      <button shiro:hasPermission="duty:month:register " type="button "  class="btn btn-primary " onclick="set() "><i class="fa fa-gear " aria-hidden="true "></i>设置当前值班</button>  
+<div class="contenedor ">
+	<div class="ciclo1 ">
 		
- 		<a class="sc_object" th:each="list : ${list}">     
+ 		<a class="sc_object " th:each="list : ${list} ">     
  		              
-	                    <span  th:text="${list}"></span> 
+	                    <span  th:text="${list} "></span> 
         </a> 
-       <!-- <a class="sc_center"> <span  th:text="${dutyEmp.name}"></span></a> -->
-       <a class="sc_center" onclick="tanchu()">求注册码</a>
+       <!-- <a class="sc_center "> <span  th:text="${dutyEmp.name} "></span></a> -->
+       <a class="sc_center " onclick="tanchu() ">求注册码</a>
 	</div>
 	
 </div>
-<div class="dutyEmpShow">
-   <p >本月值班人员：<span id="dutyEmp"  th:text="${dutyEmp}"></span> </p>   
-   <p >下月值班人员：<span  th:text="${nextDutyEmp}"></span></p>   
+<div class="dutyEmpShow ">
+   <p >本月值班人员：<span id="dutyEmp "  th:text="${dutyEmp} "></span> </p>   
+   <p >下月值班人员：<span  th:text="${nextDutyEmp} "></span></p>   
 </div>
 
- <script type="text/javascript" src="/js/appjs/operation/duty/MonthDuty/jquery-2.1.1.min.js"></script>  
-<!-- <script src="/js/jquery.min.js?v=2.1.4"></script> -->
-<script type="text/javascript" src="/js/appjs/operation/duty/MonthDuty/smartCycle.min.js"></script>
-<script src="/js/plugins/layer/layer.min.js"></script> 
+ <script type="text/javascript " src="/js/appjs/operation/duty/MonthDuty/jquery-2.1.1.min.js "></script>  
+<!-- <script src="/js/jquery.min.js?v=2.1.4 "></script> -->
+<script type="text/javascript " src="/js/appjs/operation/duty/MonthDuty/smartCycle.min.js "></script>
+<script src="/js/plugins/layer/layer.min.js "></script> 
 
 <script>
  var radio = 200;
@@ -48,10 +49,10 @@
 
  $(function(){
 	 
-	var scs = $(".sc_object")
+	var scs = $(".sc_object ")
 	scs.each(function(){
-		if($(this).children().text() == $("#dutyEmp").text()){
-			$(this).css("background-color","green");
+		if($(this).children().text() == $("#dutyEmp ").text()){
+			$(this).css("background-color ","green ");
 		}
 	});
 	
@@ -81,7 +82,7 @@
 	}
 
  
-$(".ciclo1").smartCycle({
+$(".ciclo1 ").smartCycle({
 	container_width: '10px',
 	container_height: '500px',
 	radio: radio,
@@ -95,9 +96,9 @@ $(".ciclo1").smartCycle({
 //var alphabet_pos =6;
 
 
-$(".add").click(function(){
+$(".add ").click(function(){
 	
-	$(".ciclo1").append('<a class="sc_object">'+alphabet[alphabet_pos]+'</a>');  
+	$(".ciclo1 ").append('<a class="sc_object ">'+alphabet[alphabet_pos]+'</a>');  
 
 	radio+=25;
 	radio_arrows+=25;
@@ -107,17 +108,17 @@ $(".add").click(function(){
 	c_container_width+=50;
 	c_container_height+=50;
 
-	$(".contenedor").css({
+	$(".contenedor ").css({
 		'width':c_container_width+'px',
 		'height':c_container_height+'px'
 	});
 
-	$(".ciclo1").smartCycle('options',{'radio': radio, 'radio_arrows': radio_arrows, 'container_width': container_width+'px',
+	$(".ciclo1 ").smartCycle('options',{'radio': radio, 'radio_arrows': radio_arrows, 'container_width': container_width+'px',
 	'container_height': container_height+'px',});
 
 	
 
-	$(".ciclo1").smartCycle('realign');
+	$(".ciclo1 ").smartCycle('realign');
 
 	alphabet_pos+=1;
 
@@ -139,6 +140,6 @@ $(".add").click(function(){
 	}
   
 </script>
-<!-- <div th:include="include :: footer"></div> -->
+<!-- <div th:include="include :: footer "></div> -->
 </body>
 </html>

@@ -1,31 +1,34 @@
 <!DOCTYPE html>
-<html>
-<meta charset="utf-8">
-<head th:include="include :: header"></head>
-<body>
-	<div class="wrapper wrapper-content ">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<meta charset="utf-8">
+
+	<head th:include="include :: header"></head>
+
+	<body>
+		<div class="wrapper wrapper-content ">
 			<div class="ibox">
 				<div class="ibox-body">
 					<div class="ibox-button">
 						<div class="columns pull-right">
-								<button class="btn btn-success" onclick="reLoad()">查询</button>
+							<button class="btn btn-success" onclick="reLoad()">查询</button>
 						</div>
 
 						<div class="columns pull-right col-md-2 nopadding">
-								<input id="searchName" type="text" class="form-control  enterSearch" placeholder="类型描述">
+							<input id="searchName" type="text" class="form-control  enterSearch" placeholder="类型描述">
 						</div>
 					</div>
 					<div class='list-content pre-scrollable'>
-						<table id="exampleTable"  data-mobile-responsive="true"> </table>
+						<table id="exampleTable" data-mobile-responsive="true"> </table>
 					</div>
 				</div>
 			</div>
-	</div>
-	<script th:inline="javascript" type="text/javascript">
-		var platId = [[${platId}]];
-	</script>
-	<div th:include="include :: footer"></div>
-	<script type="text/javascript" th:src="@{/js/appjs/sysManagement/common/knowledgeClass/knowledgeClassWindow.js}"></script>
-	<script type="text/javascript" th:src="@{/js/global.js}"></script>
-</body>
+		</div>
+		<script th:inline="javascript" type="text/javascript">
+			var platId = [[${platId}]];
+		</script>
+		<div th:include="include :: footer"></div>
+		<script type="text/javascript" th:src="@{/js/appjs/sysManagement/common/knowledgeClass/knowledgeClassWindow.js}"></script>
+		<script type="text/javascript" th:src="@{/js/global.js}"></script>
+	</body>
+
 </html>
