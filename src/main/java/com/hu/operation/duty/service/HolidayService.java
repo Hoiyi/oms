@@ -1,0 +1,1 @@
+package com.hu.operation.duty.service;import java.util.List;import com.hu.operation.duty.domain.DutyOrder;public interface HolidayService {    void saveDutyEmp(String paramString);    String getDutyEmp();    List<DutyOrder> getDuty();}

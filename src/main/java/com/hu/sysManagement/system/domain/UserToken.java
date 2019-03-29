@@ -1,0 +1,1 @@
+package com.hu.sysManagement.system.domain;import java.io.Serializable;import lombok.Data;@Datapublic class UserToken implements Serializable {    private static final long serialVersionUID = 1L;    private Long userId;    private String username;    private String name;    private String password;    private Long deptId;}

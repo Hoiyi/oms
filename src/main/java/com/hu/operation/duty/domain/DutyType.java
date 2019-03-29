@@ -1,0 +1,1 @@
+package com.hu.operation.duty.domain;import lombok.Data;@Datapublic class DutyType {    private Long id;    private String typeName;    private String dutyCircle;}

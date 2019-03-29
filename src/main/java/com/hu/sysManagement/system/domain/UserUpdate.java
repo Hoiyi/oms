@@ -1,0 +1,1 @@
+package com.hu.sysManagement.system.domain;import lombok.Data;@Datapublic class UserUpdate {    private User user = new User();    private String pwdOld;    private String pwdNew;}
