@@ -39,4 +39,6 @@
 * 6.druid可视化界面地址：http://127.0.0.1/oms/druid/index.html
 * 7.么得了，不懂得简书私信下我：https://www.jianshu.com/u/8a60edacc192
 
-
+## 登录
+![登录](http://tc.lihail.cn/4B50CF7E-C627-442c-B9E6-EC3404B32DB4.png)
+## 登录

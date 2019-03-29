@@ -24,7 +24,7 @@
 						<li class="nav-header">
 							<div style="height: 78px;">
 								<!-- 需要考虑不同屏幕logo切换 -->
-								<!-- <span class="logo-max"><b><img style="margin: 22px 0px;"  alt="logo" th:src="@{/img/logo_max.png}"></b></span> -->
+								<<span class="logo-max"><b><img style="margin: 22px 0px;"  alt="logo" th:src="@{/img/backg02.jpg}"></b></span>
 								<span class="logo-min hidden"><b><img style="margin: 22px 0px;" alt="logo" th:src="@{/img/logo_min.png}"></b></span>
 							</div>
 
@@ -118,46 +118,44 @@
 		<!-- Toastr script -->
 		<script th:src="@{/js/plugins/toastr/toastr.min.js}"></script>
 		<script type="text/javascript" th:inline="javascript">
-			var ctx = [
-					[@ {
-							/}]];
-							$(function() {
-								$('li.dropdown').mouseover(function() {
-									$(this).addClass('open');
-								}).mouseout(function() {
-									$(this).removeClass('open');
-								});
+			var ctx = [[@{/}]];
+			$(function() {
+				$('li.dropdown').mouseover(function() {
+					$(this).addClass('open');
+				}).mouseout(function() {
+					$(this).removeClass('open');
+				});
 
-								//搜索响应回车事件
-								$("#top-search").on('keydown', function() {
-									if(event.keyCode == 13) {
-										window.open('https://www.baidu.com/s?wd=' + $("#top-search").val(), '_blank');
-									}
-									return;
-								});
-							});
+				//搜索响应回车事件
+				$("#top-search").on('keydown', function() {
+					if(event.keyCode == 13) {
+						window.open('https://www.baidu.com/s?wd=' + $("#top-search").val(), '_blank');
+					}
+					return;
+				});
+			});
 
-							function personal() {
-								layer.open({
-									type: 2,
-									title: '个人设置',
-									maxmin: true,
-									shadeClose: false,
-									area: ['50%', '70%'],
-									content: ctx + 'sys/user/personal'
-								});
-							}
+			function personal() {
+				layer.open({
+					type: 2,
+					title: '个人设置',
+					maxmin: true,
+					shadeClose: false,
+					area: ['50%', '70%'],
+					content: ctx + 'sys/user/personal'
+				});
+			}
 
-							function settings() {
-								layer.open({
-									type: 2,
-									title: '系统设置',
-									maxmin: true,
-									shadeClose: false,
-									area: ['50%', '70%'],
-									content: ctx + 'sys/settings'
-								});
-							}
+			function settings() {
+				layer.open({
+					type: 2,
+					title: '系统设置',
+					maxmin: true,
+					shadeClose: false,
+					area: ['50%', '70%'],
+					content: ctx + 'sys/settings'
+				});
+			}
 		</script>
 	</body>
 
