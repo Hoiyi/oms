@@ -1,6 +1,6 @@
 # ssoadmin
 * 后台地址: <a href="http://127.0.0.1/oms/login">后台管理系统平台</a><br/>
-* 主要技术开发人员：`915633375`H.<br/>
+* 主要技术开发人员：`https://www.jianshu.com/u/8a60edacc192`H.<br/>
 ## 系统更新
 * 无
 ## 主要功能
