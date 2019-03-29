@@ -1,6 +1,6 @@
 # ssoadmin
-* 后台地址: <a href="http://127.0.0.1/oms/login">后台管理系统平台</a><br/>
-* 主要技术开发人员：`https://www.jianshu.com/u/8a60edacc192`H.<br/>
+* 后台地址: http://127.0.0.1/oms/login 后台管理系统平台<br/>
+* 主要技术开发人员：<a href="https://www.jianshu.com/u/8a60edacc192">H.<br/>
 ## 系统更新
 * 无
 ## 主要功能
@@ -36,7 +36,7 @@
 * 3.IDE会下载maven依赖包，自动编译，如果有报错，请update project... jdk环境配置
 * 4.husvn.sql文件，初始化数据【按需导入表结构】
 * 5.最后修改数据库连接参数配置文件,配置文件在src/main/resources/application-dev.yml
-* 6.druid可视化界面地址：<a href="http://127.0.0.1/oms/druid/index.html">
+* 6.druid可视化界面地址：http://127.0.0.1/oms/druid/index.html
 * 7.么得了，不懂得简书私信下我：https://www.jianshu.com/u/8a60edacc192
 
 
