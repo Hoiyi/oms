@@ -1,6 +1,7 @@
 # ssoadmin
 * 后台地址: http://127.0.0.1/oms/login 后台管理系统平台<br/>
 * 主要技术开发人员：<a href="https://www.jianshu.com/u/8a60edacc192">H.<br/>
+* 测试账号：admin/123456
 ## 系统更新
 * 无
 ## 主要功能
@@ -40,16 +41,6 @@
 * 7.么得了，不懂得简书私信下我：https://www.jianshu.com/u/8a60edacc192
 
 ## 登录
-![登录](http://tc.lihail.cn/4B50CF7E-C627-442c-B9E6-EC3404B32DB4.png)
+![登录](https://images.gitee.com/uploads/images/2020/0806/132536_b58623ae_1647553.png)
 ##
-![登录](http://tc.lihail.cn/7223255C-0C57-466a-B58A-51567B69134B.png)
-##
-![登录](http://tc.lihail.cn/1A59C042-9F0B-41b3-8BEF-C4965F990D78.png)
-##运维平台
-![登录](http://tc.lihail.cn/86E887A4-D4C8-4086-AD54-B1C4ADF0016F.png)
-##
-![登录](http://tc.lihail.cn/6309FEDB-5307-44e5-98AD-C735D1B5B931.png)
-##
-![登录](http://tc.lihail.cn/CDC6572F-FD80-477d-85C3-78ED6C3630B9.png)
-##
-![登录](http://tc.lihail.cn/E8A7026B-601F-409e-AFF7-70E4E34E94BC.png)
+![登录](https://images.gitee.com/uploads/images/2020/0806/132536_9d6f3bfd_1647553.png)
