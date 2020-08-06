@@ -49,12 +49,12 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     cache-enabled: false
 hu:
-  default-password: 300349
+  default-password: 123456
   charset: UTF-8
   company-name: 小小测试
   mail:
     suffix: china-hu.com
     generate-mode:  1 #邮箱生成格式  1.全拼  2.姓全拼+名首字母
     smtp-server:  smtp.163.com
-    account: ligonghai01@163.com
-    password: l123456789
+    account: test231321@163.com
+    password: 123456
