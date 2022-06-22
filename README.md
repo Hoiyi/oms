@@ -15,7 +15,7 @@
 * 定时器：`Quartz`
 * 数据库连接池：`Druid`
 * 日志管理：`SLF4J`、`Log4j`
-* 前端框架：`bootstrap`
+* 前端框架：`bootstrap + layui`
 * 热部署：`jrebel`
 
 ### 开发环境
@@ -28,7 +28,7 @@
 
 # 运行环境
 * WEB服务器：`Tomcat` 、`JBoss`、`Jetty` 等
-* 数据库服务器：`Oralce`
+* 数据库服务器：`mysql`
 * 操作系统：`Windows`、`Linux`
 
 #本地部署
